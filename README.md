@@ -17,6 +17,8 @@ python3 -m http.server 8806 --bind 127.0.0.1
 ## 目录
 
 - `index.html`：网站页面、样式和主要交互。
+- `css/product-system.css`：产品系统页面的独立样式。
+- `js/product-system.js`：产品系统页面的详情与订购交互。
 - `js/editor-3d.js`：Three.js 空间设计器。
 - `js/gsap.min.js`、`js/ScrollTrigger.min.js`：页面动画依赖。
 - `images/`：网站当前实际使用的图片。

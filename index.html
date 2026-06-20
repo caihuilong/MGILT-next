@@ -6,6 +6,7 @@
 <title>MGILT 麦吉蓝图 — 模块化生态空间</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Noto+Sans+SC:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400&family=Source+Han+Sans+CN:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/product-system.css">
 <script src="js/gsap.min.js"></script>
 <script src="js/ScrollTrigger.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
@@ -1012,7 +1013,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
   <div class="nav-logo" onclick="navigateTo('home')"><span class="dot"></span>MGILT</div>
   <div class="nav-links">
     <a href="#home" data-page="home">首页</a>
-    <a href="#system" data-page="system">模块系统</a>
+    <a href="#system" data-page="system">产品系统</a>
     <a href="#cases" data-page="cases">空间灵感</a>
     <a href="#editor" data-page="editor">设计你的MGILT</a>
     <a href="#about" data-page="about">关于MGILT</a>
@@ -1041,7 +1042,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="#home" data-page="home">首页 Home</a>
-  <a href="#system" data-page="system">模块系统 System</a>
+  <a href="#system" data-page="system">产品系统 System</a>
   <a href="#cases" data-page="cases">空间灵感 Cases</a>
   <a href="#editor" data-page="editor">设计你的MGILT Editor</a>
   <a href="#about" data-page="about">关于MGILT About</a>
@@ -1066,7 +1067,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
       </div>
       <div class="links">
         <a href="#home" onclick="navigateTo('home')">首页</a>
-        <a href="#system" onclick="navigateTo('system')">模块系统</a>
+        <a href="#system" onclick="navigateTo('system')">产品系统</a>
         <a href="#cases" onclick="navigateTo('cases')">空间灵感</a>
         <a href="#editor" onclick="navigateTo('editor')">设计你的MGILT</a>
         <a href="#about" onclick="navigateTo('about')">关于MGILT</a>
@@ -1122,449 +1123,90 @@ input,select,textarea{font-family:inherit;font-size:inherit}
   </div>
 </section>
 
-<!-- PAGE: SYSTEM -->
+<!-- PAGE: PRODUCT SYSTEM -->
 <section class="page" id="page-system">
-  <!-- Hero 区域 -->
-  <div style="padding-top:164px;padding-bottom:60px;text-align:center;max-width:1320px;margin:0 auto;padding-left:var(--page-pad);padding-right:var(--page-pad)">
-    <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a0a09b;margin-bottom:16px;font-weight:300">The System</div>
-    <h1 style="font-size:36px;font-weight:300;line-height:1.2;letter-spacing:-0.5px;color:#1A1A1A;margin-bottom:24px">六边形模块化系统</h1>
-    <div style="max-width:560px;margin:0 auto">
-      <p style="font-size:15px;color:#6b6b66;line-height:1.8;font-weight:300">以六边形为基础单元，通过标准化接口实现自由拼接。<br>从单一模块到完整生态空间，四步即可完成。</p>
-    </div>
-  </div>
-
-  <!-- 对比表格 -->
-  <div style="max-width:1320px;margin:0 auto;padding:0 var(--page-pad) 100px">
-    <div style="margin-bottom:80px;text-align:center">
-      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a0a09b;margin-bottom:16px;font-weight:300">Comparison</div>
-      <h2 style="font-size:24px;font-weight:300;line-height:1.2;letter-spacing:-0.5px;color:#1A1A1A">传统搭建 vs MGILT</h2>
-    </div>
-    <div style="border-top:1px solid #e5e5e5">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:32px 0;border-bottom:1px solid #e5e5e5;align-items:center">
-        <span style="font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase">对比维度</span>
-        <span style="font-size:13px;color:#666">传统建造</span>
-        <span style="font-size:16px;font-weight:500;text-align:right;letter-spacing:-0.5px">MGILT 模块化</span>
+  <div class="ps-hero">
+    <div class="ps-hero-content">
+      <div class="ps-kicker">The Product System</div>
+      <h1 class="ps-title">MGILT 城市绿岛系列 V4.0</h1>
+      <p class="ps-copy">更快、更省、更好、更耐久</p>
+      <div class="ps-tags">
+        <span class="ps-tag">1–2 天搭建</span><span class="ps-tag">2–4 人组装</span>
+        <span class="ps-tag">材料损耗 &lt; 3%</span><span class="ps-tag">模块化快速替换</span>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:32px 0;border-bottom:1px solid #e5e5e5;align-items:center">
-        <span style="font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase">建造周期</span>
-        <span style="font-size:13px;color:#666">6-18 个月</span>
-        <span style="font-size:16px;font-weight:500;text-align:right;letter-spacing:-0.5px;color:#7A9E7E">2-4 周</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:32px 0;border-bottom:1px solid #e5e5e5;align-items:center">
-        <span style="font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase">施工人数</span>
-        <span style="font-size:13px;color:#666">8-12 人</span>
-        <span style="font-size:16px;font-weight:500;text-align:right;letter-spacing:-0.5px;color:#7A9E7E">2-3 人</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:32px 0;border-bottom:1px solid #e5e5e5;align-items:center">
-        <span style="font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase">材料损耗</span>
-        <span style="font-size:13px;color:#666">15-25%</span>
-        <span style="font-size:16px;font-weight:500;text-align:right;letter-spacing:-0.5px;color:#7A9E7E">&lt; 3%</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:32px 0;border-bottom:1px solid #e5e5e5;align-items:center">
-        <span style="font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase">后期维护</span>
-        <span style="font-size:13px;color:#666">复杂且高昂</span>
-        <span style="font-size:16px;font-weight:500;text-align:right;letter-spacing:-0.5px;color:#7A9E7E">模块化快速替换</span>
+      <div class="ps-compare">
+        <div class="ps-compare-row ps-compare-head"><span>传统建造</span><span>对比维度</span><span>MGILT 城市绿岛 V4.0</span></div>
+        <div class="ps-compare-row"><span>2–6 个月</span><span>建造周期</span><span>1–2 天</span></div>
+        <div class="ps-compare-row"><span>8–12 人</span><span>施工人数</span><span>2–3 人</span></div>
+        <div class="ps-compare-row"><span>15–25%</span><span>材料损耗</span><span>&lt; 3%</span></div>
+        <div class="ps-compare-row"><span>复杂且高昂</span><span>后期维护</span><span>模块化快速替换</span></div>
       </div>
     </div>
   </div>
 
-  <!-- 六大核心模块 -->
-  <div style="position:relative;padding:100px 0;overflow:hidden;background:#fafaf8">
-    <!-- 六边形点状背景 -->
-    <div style="position:absolute;inset:0;pointer-events:none;opacity:0.05;background-image:radial-gradient(#1A1A1A 1px, transparent 1px),radial-gradient(#1A1A1A 1px, transparent 1px);background-size:60px 60px;background-position:0 0,30px 30px"></div>
-    <div style="max-width:1320px;margin:0 auto;padding:0 var(--page-pad);position:relative;z-index:1">
-      <div style="margin-bottom:80px;text-align:center">
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a0a09b;margin-bottom:16px;font-weight:300">Core Units</div>
-        <h2 style="font-size:24px;font-weight:300;line-height:1.2;letter-spacing:-0.5px;color:#1A1A1A">六大核心模块</h2>
-      </div>
-      <div id="modulesGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px">
-        <!-- 模块卡片由 JS 生成 -->
-      </div>
+  <div class="ps-section ps-modules" id="product-modules">
+    <div class="ps-inner">
+      <div class="ps-heading"><div><div class="ps-kicker">Core Modules</div><h2 class="ps-title">九大核心模块</h2></div><p class="ps-copy">为秩序而生，为变化而设。统一的六边形接口，让不同高度与功能的模块自由组合。</p></div>
+      <div class="ps-group"><div class="ps-group-title">空间基础模块</div><div class="ps-grid">
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244600400-833049816.jpg" alt="踏板" loading="lazy"></div><div class="ps-card-body"><h3>踏板</h3><div class="ps-card-size">边长 490mm / 高 60mm</div><p class="ps-card-desc">防滑耐腐，草地无痕直铺</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板</p></div></article>
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244606863-985264005.jpg" alt="矮阶坐凳" loading="lazy"></div><div class="ps-card-body"><h3>矮阶坐凳</h3><div class="ps-card-size">边长 490mm / 高 260mm</div><p class="ps-card-desc">亲子尺度，打造全龄友好</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板构<br>环保塑木板</p></div></article>
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244612520-510099045.jpg" alt="标准坐凳" loading="lazy"></div><div class="ps-card-body"><h3>标准坐凳</h3><div class="ps-card-size">边长 490mm / 高 460mm</div><p class="ps-card-desc">经典坐高，构建社交内核</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板</p></div></article>
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244654900-490597060.jpg" alt="桌台" loading="lazy"></div><div class="ps-card-body"><h3>桌台</h3><div class="ps-card-size">边长 490mm / 高 760mm</div><p class="ps-card-desc">即停即走，构筑街角吧台</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板</p></div></article>
+      </div></div>
+      <div class="ps-group"><div class="ps-group-title">自然生态模块</div><div class="ps-grid">
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244676640-101639139.jpg" alt="标准种植" loading="lazy"></div><div class="ps-card-body"><h3>标准种植</h3><div class="ps-card-size">边长 490mm / 高 360mm</div><p class="ps-card-desc">融入自然，轻松点缀绿意</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板、滤水毛毡袋</p></div></article>
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244681881-58125307.jpg" alt="高型种植" loading="lazy"></div><div class="ps-card-body"><h3>高型种植</h3><div class="ps-card-size">边长 490mm / 高 560mm</div><p class="ps-card-desc">站立式种植，无需弯腰</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板、滤水毛毡袋</p></div></article>
+      </div></div>
+      <div class="ps-group"><div class="ps-group-title">场景增强模块</div><div class="ps-grid">
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244691174-381133974.jpg" alt="沙坑" loading="lazy"></div><div class="ps-card-body"><h3>沙坑</h3><div class="ps-card-size">边长 490mm / 高 360mm</div><p class="ps-card-desc">指尖造物，微缩户外课堂</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板、滤水毛毡袋</p></div></article>
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244695766-732889514.jpg" alt="宠物之家" loading="lazy"></div><div class="ps-card-body"><h3>宠物之家</h3><div class="ps-card-size">边长 490mm / 高 560mm</div><p class="ps-card-desc">萌宠专属，共享慵懒午后</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板、阳光板</p></div></article>
+        <article class="ps-card"><div class="ps-card-image"><img src="images/1780244699910-564757127.jpg" alt="阳伞" loading="lazy"></div><div class="ps-card-body"><h3>阳伞</h3><div class="ps-card-size">边长 490mm / 高 2200mm</div><p class="ps-card-desc">立体遮阳，解锁全天候聚落</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板、阳伞构件</p></div></article>
+      </div></div>
     </div>
   </div>
 
-  <!-- 四步构建 -->
-  <div style="padding:100px 0;background:#FAFAF8">
-    <div style="max-width:1320px;margin:0 auto;padding:0 var(--page-pad)">
-      <div style="margin-bottom:80px;text-align:center">
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a0a09b;margin-bottom:16px;font-weight:300">Process</div>
-        <h2 style="font-size:24px;font-weight:300;line-height:1.2;letter-spacing:-0.5px;color:#1A1A1A">四步构建你的空间</h2>
-      </div>
-      <div style="display:flex;gap:80px;align-items:stretch">
-        <div id="stepsList" style="flex:0 0 30%;display:flex;flex-direction:column">
-          <!-- 步骤列表由 JS 生成 -->
-        </div>
-        <div id="stepsImage" style="flex:1;min-height:400px;background:#f5f5f3;border-radius:4px;overflow:hidden;position:relative">
-          <!-- 步骤图片由 JS 生成 -->
-        </div>
-      </div>
+  <div class="ps-section ps-colors"><div class="ps-inner">
+    <div class="ps-kicker">Standard Frame Colors</div><h2 class="ps-title">MGILT 标准色系统</h2><p class="ps-copy">三款标准色均为钢管框架涂层烤漆色，用于模块骨架与结构件呈现不同场景风格。标准色 2–3 周出货；定制色请联系城市服务商。</p>
+    <div class="ps-color-grid">
+      <article class="ps-color"><img src="images/1781670227938-633550722.jpg" alt="Frame Orange" loading="lazy"><div class="ps-color-info"><div class="ps-swatch" style="background:#F57E2C"></div><h3>Frame Orange</h3><p>适合高识别度、活力型公共空间。</p></div></article>
+      <article class="ps-color"><img src="images/1781670333945-685153502.jpg" alt="Frame Sky Blue" loading="lazy"><div class="ps-color-info"><div class="ps-swatch" style="background:#ADD8E9"></div><h3>Frame Sky Blue</h3><p>适合轻盈、清爽的校园与社区场景。</p></div></article>
+      <article class="ps-color"><img src="images/1781670268946-569159704.jpg" alt="Frame Silver Gray" loading="lazy"><div class="ps-color-info"><div class="ps-swatch" style="background:#D4D9DC"></div><h3>Frame Silver Gray</h3><p>适合克制、耐看的城市公共空间。</p></div></article>
     </div>
-  </div>
+  </div></div>
 
-  <!-- 技术规格 -->
-  <div style="padding:100px 0;background:#1A1A1A;color:#fff">
-    <div style="max-width:1320px;margin:0 auto;padding:0 var(--page-pad)">
-      <div style="margin-bottom:80px;text-align:center">
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px;font-weight:300">Specifications</div>
-        <h2 style="font-size:24px;font-weight:300;line-height:1.2;letter-spacing:-0.5px;color:#fff">技术规格</h2>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:80px;margin-bottom:80px;text-align:center">
-        <div>
-          <h4 style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:40px;text-align:center">材料结构</h4>
-          <ul style="list-style:none;padding:0;margin:0;text-align:center">
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>航空级铝合金框架</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>高强度耐候复合板材</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>模块化快接电路系统</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>隐形排水导流结构</li>
-          </ul>
-        </div>
-        <div>
-          <h4 style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:40px;text-align:center">性能参数</h4>
-          <ul style="list-style:none;padding:0;margin:0;text-align:center">
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>抗风等级：12级</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>承重能力：500kg/㎡</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>耐腐蚀年限：25年+</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>工作温度：-40℃ 至 80℃</li>
-          </ul>
-        </div>
-        <div>
-          <h4 style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:40px;text-align:center">智能集成</h4>
-          <ul style="list-style:none;padding:0;margin:0;text-align:center">
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>自动灌溉感应系统</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>App远程环境监控</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>太阳能自供电模块</li>
-            <li style="font-size:13px;color:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;gap:16px"><span style="width:3px;height:3px;background:rgba(255,255,255,0.2);border-radius:50%;flex-shrink:0;display:none"></span>智能灯光场景联动</li>
-          </ul>
-        </div>
-      </div>
+  <div class="ps-section"><div class="ps-inner">
+    <div class="ps-heading"><div><div class="ps-kicker">Scene Components</div><h2 class="ps-title">场景配套组件</h2></div><p class="ps-copy">围绕 MGILT 模块系统，补充遮阳、停留、导视、照明、绿植容器与软装，让空间从结构到氛围保持统一完整。</p></div>
+    <div class="ps-accessory-grid">
+      <article class="ps-accessory"><img src="images/1780295437020-717958591.jpg" alt="遮阳停留组件" loading="lazy"><div class="ps-accessory-info"><div class="ps-accessory-tag">停留舒适</div><h3>遮阳停留组件</h3><p>面向商业外摆、露台与文旅营地，补齐遮阳、休憩与轻社交节点。</p></div></article>
+      <article class="ps-accessory"><img src="images/1780284013403-4999184.jpg" alt="导视识别组件" loading="lazy"><div class="ps-accessory-info"><div class="ps-accessory-tag">现场识别</div><h3>导视识别组件</h3><p>用于入口提示、活动信息、动线说明与品牌物料，保持现场沟通统一。</p></div></article>
+      <article class="ps-accessory"><img src="images/1780244898571-713670917.jpg" alt="氛围照明组件" loading="lazy"><div class="ps-accessory-info"><div class="ps-accessory-tag">夜间氛围</div><h3>氛围照明组件</h3><p>补充路径、植物与停留区的低位光源，让夜间场景更清晰、更有层次。</p></div></article>
+      <article class="ps-accessory"><img src="images/1780295444122-4886938.jpg" alt="绿植软装组件" loading="lazy"><div class="ps-accessory-info"><div class="ps-accessory-tag">空间柔化</div><h3>绿植软装组件</h3><p>围绕植物容器、季节陈列与软装物料，增强空间层次和停留感。</p></div></article>
     </div>
-  </div>
-  <!-- 六边形动画区域 - 延伸到页面左右边缘 -->
-  <div id="hexGridContainer" style="width:100vw;height:400px;position:relative;overflow:hidden;background:#1A1A1A">
-    <svg id="hexGridSvg" style="position:absolute;top:0;left:0;width:100%;height:100%"></svg>
-    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
-      <span style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:24px;font-weight:300">Infinite Possibilities</span>
-      <h3 style="font-size:24px;font-weight:300;letter-spacing:2px;color:rgba(255,255,255,0.9)">无限可能的搭接</h3>
-    </div>
-  </div>
+  </div></div>
 
-  <script>
-  // 模块系统页面 JS
-  (function(){
-    const modules = [
-      { name: 'M-V4-PT-0-S 踏面', params: 'H: 50mm / L: 490mm', imgs: ['images/module-pt-0-s-tamian.webp'] },
-      { name: 'M-V4-BN-2-S 低坐凳', params: 'H: 280mm / L: 490mm', imgs: ['images/module-bn-2-s-zuodeng.webp'] },
-      { name: 'M-V4-BN-4-S 高坐凳', params: 'H: 480mm / L: 490mm', imgs: ['images/module-bn-4-s-gaozuodeng.webp'] },
-      { name: 'M-V4-PL-3-S 低种植', params: 'H: 380mm / L: 490mm', imgs: ['images/module-pl-3-s-dizhognzhi-1.webp', 'images/module-pl-3-s-dizhognzhi-2.webp'] },
-      { name: 'M-V4-PL-5-S 高种植', params: 'H: 580mm / L: 490mm', imgs: ['images/module-pl-5-s-gaozhongzhi-1.webp', 'images/module-pl-5-s-gaozhongzhi-2.webp'] },
-      { name: 'M-V4-TB-7-S 桌台', params: 'H: 780mm / L: 490mm', imgs: ['images/module-tb-7-s-zhuotai.webp'] }
-    ];
+  <div class="ps-section ps-details"><div class="ps-inner">
+    <div class="ps-kicker">MGILT 麦吉蓝图</div><h2 class="ps-title">让小微空间成为城市更新的民生触点</h2><p class="ps-copy">无需开挖、快速铺设、灵活组合，<br>让社区、街角、庭院与商业外摆都能快速生成<br>可停留、可交流、可生长的日常绿岛</p>
+    <div class="ps-split"><div class="ps-tabs">
+      <button type="button" class="ps-tab active" data-ps-detail data-title="全龄友好" data-image="images/1780283995729-924137313.jpg" data-description="为儿童、老人和不同使用者提供可坐、可停留、可互动的日常公共空间。"><strong>全龄友好</strong><span>回应多元人群的日常需求</span></button>
+      <button type="button" class="ps-tab" data-ps-detail data-title="社区活力" data-image="images/1780284014765-983873854.jpg" data-description="把闲置边角空间转化为居民愿意停留、交流与参与的公共节点。"><strong>社区活力</strong><span>让闲置空间成为交流节点</span></button>
+      <button type="button" class="ps-tab" data-ps-detail data-title="绿色微更新" data-image="images/1780284032734-364150502.jpg" data-description="以低干预方式补充绿化、休憩与景观功能，提升社区环境品质。"><strong>绿色微更新</strong><span>以低干预提升环境品质</span></button>
+      <button type="button" class="ps-tab" data-ps-detail data-title="可复制推广" data-image="images/1780284039724-733392425.jpg" data-description="模块化组合便于快速部署、维护与多点复制，适合不同社区场景持续推广。"><strong>可复制推广</strong><span>快速落地与持续推广</span></button>
+    </div><div class="ps-detail-media"><img id="psDetailImage" src="images/1780283995729-924137313.jpg" alt="全龄友好" loading="lazy"><div class="ps-detail-caption" id="psDetailCaption">为儿童、老人和不同使用者提供可坐、可停留、可互动的日常公共空间。</div></div></div>
+  </div></div>
 
-    const steps = [
-      { id: '01', title: '选择模块', desc: '从6种基础模块中选择所需功能单元，每种模块对应不同空间需求。', img: 'https://picsum.photos/seed/step-iso1/1200/800' },
-      { id: '02', title: '自由拼接', desc: '通过标准六边形接口，将模块按需组合，创建个性化空间布局。', img: 'https://picsum.photos/seed/step-iso2/1200/800' },
-      { id: '03', title: '场景成型', desc: '组合完成后即形成完整的功能场景，涵盖居住、社交、生态等维度。', img: 'https://picsum.photos/seed/step-iso3/1200/800' },
-      { id: '04', title: '持续进化', desc: '随时增减模块，空间随需求变化而进化，真正实现可持续使用。', img: 'https://picsum.photos/seed/step-iso4/1200/800' }
-    ];
-
-    let activeStep = 0;
-    let hoveredModule = null;
-    let moduleIntervals = {};
-
-    // 渲染模块卡片
-    function renderModules() {
-      const grid = document.getElementById('modulesGrid');
-      if (!grid) return;
-      grid.innerHTML = modules.map((m, i) => `
-        <div class="mod-card-v2" data-index="${i}" style="text-align:center;cursor:crosshair;opacity:0.7;transform:scale(0.9);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)">
-          <div class="mod-card-img" style="aspect-ratio:1;margin-bottom:32px;position:relative;overflow:hidden;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;padding:40px;box-shadow:0 4px 20px rgba(0,0,0,0.04);transition:box-shadow 0.7s">
-            ${m.imgs.map((img, idx) => `
-              <img src="${img}" alt="${m.name}" style="width:100%;height:100%;object-contain;position:absolute;opacity:${idx === 0 ? 1 : 0};transition:opacity 1.2s ease-in-out;mix-blend-mode:multiply" data-img-index="${idx}" referrerPolicy="no-referrer" onerror="this.style.display='none'" />
-            `).join('')}
-          </div>
-          <h3 style="font-size:18px;font-weight:400;color:#1A1A1A;margin-bottom:8px;letter-spacing:-0.3px">${m.name}</h3>
-          <p style="font-size:9px;color:#999;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;font-weight:300">${m.params}</p>
-        </div>
-      `).join('');
-
-      // 默认启动多图自动切换
-      modules.forEach((m, i) => {
-        if (m.imgs && m.imgs.length > 1) {
-          startImageCycle(i);
-        }
-      });
-
-      // 绑定悬停事件
-      grid.querySelectorAll('.mod-card-v2').forEach(card => {
-        const idx = parseInt(card.dataset.index);
-        card.addEventListener('mouseenter', () => {
-          hoveredModule = idx;
-          updateModuleStates();
-        });
-        card.addEventListener('mouseleave', () => {
-          hoveredModule = null;
-          updateModuleStates();
-        });
-      });
-    }
-
-    function updateModuleStates() {
-      const grid = document.getElementById('modulesGrid');
-      if (!grid) return;
-      grid.querySelectorAll('.mod-card-v2').forEach((card, i) => {
-        if (hoveredModule === null) {
-          card.style.opacity = '0.7';
-          card.style.transform = 'scale(0.9)';
-          card.style.zIndex = '10';
-        } else if (hoveredModule === i) {
-          card.style.opacity = '1';
-          card.style.transform = 'scale(1.1)';
-          card.style.zIndex = '20';
-          card.querySelector('.mod-card-img').style.boxShadow = '0 20px 50px rgba(0,0,0,0.1)';
-        } else {
-          card.style.opacity = '0.4';
-          card.style.transform = 'scale(0.9)';
-          card.style.zIndex = '10';
-          card.querySelector('.mod-card-img').style.boxShadow = '0 4px 20px rgba(0,0,0,0.04)';
-        }
-      });
-    }
-
-    function startImageCycle(idx) {
-      const m = modules[idx];
-      if (!m.imgs || m.imgs.length <= 1) return;
-      stopImageCycle(idx);
-      let currentIdx = 0;
-      moduleIntervals[idx] = setInterval(() => {
-        const card = document.querySelector(`.mod-card-v2[data-index="${idx}"]`);
-        if (!card) return;
-        const imgs = card.querySelectorAll('img');
-        imgs.forEach((img, i) => {
-          img.style.opacity = i === currentIdx ? '1' : '0';
-        });
-        currentIdx = (currentIdx + 1) % m.imgs.length;
-      }, 2500);
-    }
-
-    function stopImageCycle(idx) {
-      if (moduleIntervals[idx]) {
-        clearInterval(moduleIntervals[idx]);
-        delete moduleIntervals[idx];
-      }
-    }
-
-    // 渲染步骤
-    function renderSteps() {
-      const list = document.getElementById('stepsList');
-      const image = document.getElementById('stepsImage');
-      if (!list || !image) return;
-
-      list.innerHTML = steps.map((s, i) => `
-        <div class="step-item" data-index="${i}" style="padding:32px;border-left:2px solid transparent;transition:all 0.5s;opacity:${i === 0 ? '1' : '0.3'};background:${i === 0 ? '#e8f0e9' : 'transparent'};flex:1;display:flex;flex-direction:column;justify-content:center">
-          <div style="display:flex;align-items:center;gap:24px;margin-bottom:16px">
-            <span style="font-size:24px;font-weight:300;font-family:'JetBrains Mono',monospace">${s.id}</span>
-            <h3 style="font-size:16px;font-weight:400;letter-spacing:-0.3px">${s.title}</h3>
-          </div>
-          <p style="font-size:12px;color:#666;line-height:1.7">${s.desc}</p>
-        </div>
-      `).join('');
-
-      image.innerHTML = `
-        <img src="${steps[0].img}" alt="${steps[0].title}" style="width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity 0.6s" id="stepImage" referrerPolicy="no-referrer" />
-        <div style="position:absolute;bottom:32px;right:32px;display:flex;gap:8px">
-          ${steps.map((_, i) => `<div class="step-dot" data-index="${i}" style="width:${i === 0 ? '32' : '8'}px;height:4px;background:${i === 0 ? '#1A1A1A' : '#d1d1d1'};transition:all 0.5s"></div>`).join('')}
-        </div>
-      `;
-
-      list.querySelectorAll('.step-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const idx = parseInt(item.dataset.index);
-          setActiveStep(idx);
-        });
-      });
-    }
-
-    function setActiveStep(idx) {
-      activeStep = idx;
-      const list = document.getElementById('stepsList');
-      const image = document.getElementById('stepsImage');
-      if (!list || !image) return;
-
-      list.querySelectorAll('.step-item').forEach((item, i) => {
-        if (i === idx) {
-          item.style.borderLeftColor = '#7A9E7E';
-          item.style.background = '#e8f0e9';
-          item.style.opacity = '1';
-        } else {
-          item.style.borderLeftColor = 'transparent';
-          item.style.background = 'transparent';
-          item.style.opacity = '0.3';
-        }
-      });
-
-      const img = image.querySelector('#stepImage');
-      const dots = image.querySelectorAll('.step-dot');
-      if (img) {
-        // 淡出当前图片
-        img.style.opacity = '0';
-        // 淡入新图片
-        setTimeout(() => {
-          img.src = steps[idx].img;
-          img.style.opacity = '1';
-        }, 300);
-      }
-      dots.forEach((dot, i) => {
-        dot.style.width = i === idx ? '32px' : '8px';
-        dot.style.background = i === idx ? '#1A1A1A' : '#d1d1d1';
-      });
-    }
-
-    // 六边形网格动画 - 从中心向外渐入，左右延伸至页面边缘
-    function createHexGrid() {
-      const container = document.getElementById('hexGridContainer');
-      const svg = document.getElementById('hexGridSvg');
-      if (!svg || !container) return;
-
-      // 六边形参数
-      const size = 28;
-      const width = Math.sqrt(3) * size;
-      const rowHeight = 1.5 * size;
-
-      // 获取容器实际尺寸
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight || 400;
-
-      // 计算需要的列数，确保覆盖整个宽度（多算很多列）
-      const cols = Math.ceil(containerWidth / width) + 20;
-      // 计算需要的行数，多算一些
-      const rows = Math.ceil(containerHeight / rowHeight) + 6;
-
-      // SVG viewBox 覆盖整个网格，让SVG更宽以延伸至边缘
-      const viewBoxWidth = cols * width;
-      const viewBoxHeight = rows * rowHeight + size / 2;
-      svg.setAttribute('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`);
-      svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-
-      // 生成六边形数据（按距离中心排序）
-      let hexes = [];
-      const centerX = viewBoxWidth / 2;
-      const centerY = viewBoxHeight / 2;
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const x = c * width + (r % 2 === 1 ? width / 2 : 0);
-          const y = r * rowHeight;
-          const dist = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-          hexes.push({ x, y, dist });
-        }
-      }
-      hexes.sort((a, b) => a.dist - b.dist);
-
-      // 清空并创建所有六边形（初始隐藏）
-      svg.innerHTML = '';
-      const polygons = [];
-
-      hexes.forEach((h) => {
-        // 计算六边形6个顶点（平顶朝向）
-        const points = [];
-        for (let j = 0; j < 6; j++) {
-          const angle = (Math.PI / 180) * (60 * j - 30);
-          points.push(`${h.x + size * Math.cos(angle)},${h.y + size * Math.sin(angle)}`);
-        }
-
-        const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        polygon.setAttribute('points', points.join(' '));
-        polygon.setAttribute('fill', 'rgba(255, 255, 255, 0.12)');
-        polygon.setAttribute('stroke', 'rgba(255, 255, 255, 0.04)');
-        polygon.setAttribute('stroke-width', '0.5');
-        polygon.style.opacity = '0';
-        polygon.style.transition = 'opacity 1.2s ease, fill 0.5s ease';
-        svg.appendChild(polygon);
-        polygons.push(polygon);
-
-        // hover 效果
-        polygon.addEventListener('mouseenter', () => {
-          polygon.setAttribute('fill', 'rgba(255, 255, 255, 0.2)');
-          polygon.setAttribute('stroke', 'rgba(255, 255, 255, 0.4)');
-        });
-        polygon.addEventListener('mouseleave', () => {
-          polygon.setAttribute('fill', 'rgba(255, 255, 255, 0.12)');
-          polygon.setAttribute('stroke', 'rgba(255, 255, 255, 0.04)');
-        });
-      });
-
-      // 逐批显现动画
-      let visibleCount = 0;
-      const batchSize = 3;
-      const batchInterval = 120;
-
-      function revealNextBatch() {
-        for (let i = 0; i < batchSize && visibleCount < polygons.length; i++) {
-          polygons[visibleCount].style.opacity = '1';
-          visibleCount++;
-        }
-        if (visibleCount < polygons.length) {
-          setTimeout(revealNextBatch, batchInterval);
-        }
-      }
-
-      // 启动动画
-      setTimeout(revealNextBatch, 100);
-    }
-
-    // 初始化
-    function init() {
-      renderModules();
-      renderSteps();
-    }
-
-    // 页面加载后初始化
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-
-    // 六边形动画状态管理
-    let hexGridInitialized = false;
-    let hexGridResizeTimer;
-
-    function initHexGridOnView() {
-      if (hexGridInitialized) return;
-      const hexContainer = document.getElementById('hexGridContainer');
-      if (!hexContainer) return;
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !hexGridInitialized) {
-            hexGridInitialized = true;
-            createHexGrid();
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.2 });
-
-      observer.observe(hexContainer);
-    }
-
-    // 窗口大小改变时重新计算六边形网格
-    window.addEventListener('resize', () => {
-      clearTimeout(hexGridResizeTimer);
-      hexGridResizeTimer = setTimeout(() => {
-        hexGridInitialized = false;
-        initHexGridOnView();
-      }, 200);
-    });
-
-    // 启动六边形网格观察
-    setTimeout(initHexGridOnView, 500);
-
-    // 自动切换步骤
-    setInterval(() => {
-      setActiveStep((activeStep + 1) % steps.length);
-    }, 3000);
-  })();
-  </script>
+  <div class="ps-section ps-order"><div class="ps-inner">
+    <div class="ps-kicker">Just Four Steps to Order MGILT</div><h2 class="ps-title">订购麦吉花园，只需四步</h2><p class="ps-copy">从选择到落地，让订购更简单、更高效、更安心</p><div class="ps-delivery"><span>标准品出单</span><strong>2–3 周</strong></div>
+    <div class="ps-order-layout"><div class="ps-order-image"><img id="psOrderImage" src="images/1780244883146-844186642.jpg" alt="场景匹配" loading="lazy"></div><div>
+      <div class="ps-order-steps">
+        <button type="button" class="ps-order-step active" data-ps-order data-title="场景匹配" data-image="images/1780244883146-844186642.jpg"><span class="ps-order-num">01</span><span><strong>场景匹配</strong><p>根据空间大小、功能需求和预算，推荐适合的模块组合。</p></span></button>
+        <button type="button" class="ps-order-step" data-ps-order data-title="模块适配与细节敲定" data-image="images/order-2.webp"><span class="ps-order-num">02</span><span><strong>模块适配与细节敲定</strong><p>确认每个模块的尺寸、材质和数量，确保方案顺利落地。</p></span></button>
+        <button type="button" class="ps-order-step" data-ps-order data-title="在线生成方案与预算" data-image="images/1780286004212-253129968.jpg"><span class="ps-order-num">03</span><span><strong>在线生成方案与预算</strong><p>通过在线设计工具实时查看 3D 方案和详细报价。</p></span></button>
+        <button type="button" class="ps-order-step" data-ps-order data-title="向城市服务商订购" data-image="images/1780244898571-713670917.jpg"><span class="ps-order-num">04</span><span><strong>向城市服务商订购</strong><p>联系所在城市的官方服务商，完成下单、配送与安装。</p></span></button>
+      </div>
+      <div class="ps-actions"><button type="button" class="ps-action" id="psDealerQrButton">联系城市服务商</button><a href="#partner" class="ps-action secondary" onclick="navigateTo('partner')">成为城市服务商</a></div>
+      <div class="ps-qr" id="psDealerQr"><img src="images/mgilt-city-service-qr.png" alt="城市服务商二维码"><p>扫码联系城市服务商<br>获取方案建议与项目报价</p></div>
+    </div></div>
+  </div></div>
 </section>
 
 <!-- PAGE: EDITOR -->
@@ -1844,7 +1486,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
       <input type="text" id="searchInput" placeholder="搜索网页内容..." oninput="doSearch(this.value)">
     </div>
     <div class="search-results" id="searchResults">
-      <div class="search-hint">输入关键词搜索首页、模块系统、空间灵感等内容</div>
+      <div class="search-hint">输入关键词搜索首页、产品系统、空间灵感等内容</div>
     </div>
   </div>
 </div>
@@ -3158,8 +2800,8 @@ const SEARCH_INDEX = [
   { section: '首页', anchor: 'hero', title: 'MGILT 麦吉蓝图', desc: '模块化生态空间解决方案，打造可持续的城市公共空间' },
   { section: '首页', anchor: 'philosophy', title: '城市公共空间', desc: '座椅、种植箱、景观桌等模块化产品，适用于商业、办公、教育等场景' },
   { section: '首页', anchor: 'steps', title: '设计理念', desc: '简约现代设计，天然材料，模块化组合，灵活多变的空间解决方案' },
-  { section: '模块系统', anchor: 'hex-diagram', title: '六大基础模块', desc: '踏板(50mm)、矮坐凳(280mm)、矮种植箱(380mm)、高坐凳(480mm)、高种植箱(580mm)、景观桌(780mm)' },
-  { section: '模块系统', anchor: 'mod-cards', title: '踏板 Step', desc: '50mm高度，边长490mm，价格¥2800，适合地面铺设' },
+  { section: '产品系统', anchor: 'product-modules', title: '九大核心模块', desc: '踏板、矮阶坐凳、标准坐凳、桌台、种植、沙坑、宠物之家与阳伞等模块' },
+  { section: '产品系统', anchor: 'product-modules', title: 'MGILT 城市绿岛系列 V4.0', desc: '1至2天搭建，2至4人组装，材料损耗低于3%，支持模块化快速替换' },
   { section: '空间灵感', anchor: 'cases', title: '咖啡店 CAFÉ', desc: '咖啡店空间灵感，矮坐凳+景观桌+种植箱组合' },
   { section: '空间灵感', anchor: 'cases', title: '餐厅外摆 RESTAURANT', desc: '餐厅户外空间，外摆区域模块化解决方案' },
   { section: '空间灵感', anchor: 'cases', title: '共享办公 CO-WORKING', desc: '办公空间模块组合，促进交流与协作' },
@@ -3175,7 +2817,7 @@ const SEARCH_INDEX = [
 function showSearch(){
   document.getElementById('searchModal').classList.add('show');
   document.getElementById('searchInput').value = '';
-  document.getElementById('searchResults').innerHTML = '<div class="search-hint">输入关键词搜索首页、模块系统、空间灵感等内容</div>';
+  document.getElementById('searchResults').innerHTML = '<div class="search-hint">输入关键词搜索首页、产品系统、空间灵感等内容</div>';
   setTimeout(() => document.getElementById('searchInput').focus(), 100);
 }
 function closeSearch(){
@@ -3184,7 +2826,7 @@ function closeSearch(){
 function doSearch(query){
   const resultsEl = document.getElementById('searchResults');
   if (!query || query.trim().length < 1) {
-    resultsEl.innerHTML = '<div class="search-hint">输入关键词搜索首页、模块系统、空间灵感等内容</div>';
+    resultsEl.innerHTML = '<div class="search-hint">输入关键词搜索首页、产品系统、空间灵感等内容</div>';
     return;
   }
   const q = query.toLowerCase().trim();
@@ -3206,7 +2848,7 @@ function doSearch(query){
   `).join('');
 }
 function navigateAndCloseSearch(section, anchor){
-  const sectionMap = { '首页': 'home', '模块系统': 'system', '空间灵感': 'cases', '设计你的MGILT': 'editor', '关于MGILT': 'about', '合作伙伴': 'partner' };
+  const sectionMap = { '首页': 'home', '产品系统': 'system', '空间灵感': 'cases', '设计你的MGILT': 'editor', '关于MGILT': 'about', '合作伙伴': 'partner' };
   const page = sectionMap[section] || 'home';
   closeSearch();
   navigateTo(page);
@@ -3604,6 +3246,7 @@ window.addEventListener('error', function(e) {
   console.error('MGILT Error:', e.message, e.filename, e.lineno);
 });
 </script>
+<script src="./js/product-system.js"></script>
 <script type="module" src="./js/editor-3d.js"></script>
   <!-- 回到顶部按钮 -->
   <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
