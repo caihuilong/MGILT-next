@@ -1,0 +1,10 @@
+.DS_Store
+.idea/
+.vscode/
+.claude/
+.trae/
+.tmp/
+node_modules/
+dist/
+*.log
+
