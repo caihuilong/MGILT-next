@@ -1,0 +1,94 @@
+/* 后续页面字体体系：与产品系统页面保持一致。 */
+#page-cases,#page-about,#page-partner,#page-contact,#page-login,#page-editor,#page-dashboard,#page-dealer{
+  font-family:var(--font-body,'Source Han Sans CN','DM Sans','Noto Sans SC',sans-serif);
+  color:#1a1a1a;
+}
+
+#page-cases .section-label,#page-about .section-label,#page-partner .section-label,#page-contact .section-label,
+#page-login .section-label,#page-dashboard .section-label,#page-dealer .section-label{
+  display:block;
+  margin-bottom:16px;
+  font-family:var(--font-display,'Source Han Sans CN','DM Sans',sans-serif);
+  font-size:11px;
+  font-weight:400;
+  line-height:1.45;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#a0a09b;
+}
+
+#page-cases .section-title,#page-about .section-title,#page-partner .section-title,#page-contact .section-title,
+#page-login .section-title,#page-dashboard .section-title,#page-dealer .section-title{
+  margin-bottom:16px;
+  font-family:var(--font-display,'Source Han Sans CN','DM Sans',sans-serif);
+  font-size:clamp(28px,4vw,42px)!important;
+  font-weight:500;
+  line-height:1.2;
+  letter-spacing:0;
+  color:#1a1a1a;
+}
+
+#page-cases .section-subtitle,#page-about .section-subtitle,#page-partner .section-subtitle,#page-contact .section-subtitle,
+#page-login .section-subtitle,#page-dashboard .section-subtitle,#page-dealer .section-subtitle{
+  max-width:680px;
+  font-size:18px;
+  font-weight:300;
+  line-height:1.8;
+  color:#6b6b66;
+}
+
+#page-cases h1,#page-cases h2,#page-cases h3,#page-about h1,#page-about h2,#page-about h3,#page-about h4,
+#page-partner h1,#page-partner h2,#page-partner h3,#page-partner h4,#page-contact h1,#page-contact h2,#page-contact h3,
+#page-login h1,#page-login h2,#page-login h3,#page-editor h1,#page-editor h2,#page-editor h3,
+#page-dashboard h1,#page-dashboard h2,#page-dashboard h3,#page-dealer h1,#page-dealer h2,#page-dealer h3{
+  font-family:var(--font-display,'Source Han Sans CN','DM Sans',sans-serif);
+}
+
+#page-cases p,#page-about p,#page-partner p,#page-contact p,#page-login p,#page-editor p,#page-dashboard p,#page-dealer p{
+  font-family:var(--font-body,'Source Han Sans CN','DM Sans',sans-serif);
+}
+
+#page-cases .case-card-title,#page-about .timeline-item h4,#page-partner .opp-card h3,
+#page-partner .adv-card h4,#page-partner .support-card h4{
+  font-weight:500;
+  line-height:1.35;
+}
+
+#page-partner .partner-hero-content h1{
+  font-size:clamp(36px,5vw,58px);
+  font-weight:500;
+  line-height:1.15;
+  letter-spacing:0;
+}
+
+#page-partner .section-heading{
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+  text-align:center;
+}
+#page-partner .section-heading+.opportunity-grid,
+#page-partner .section-heading+.adv-grid{
+  margin-top:64px;
+}
+#page-partner .section-heading .section-subtitle{
+  margin:0 auto;
+  text-align:center;
+}
+
+#page-editor .editor-toolbar-title,#page-editor .stat-section h3,#page-editor .editor-sidebar h3{
+  font-family:var(--font-display);
+  font-weight:500;
+  letter-spacing:.02em;
+}
+
+.footer{font-family:var(--font-body,'Source Han Sans CN','DM Sans',sans-serif)}
+.footer .container{max-width:1320px;margin:0 auto;padding:0 var(--page-pad)}
+.footer-brand{font-weight:500}
+.footer h4{font-family:var(--font-display);font-weight:400}
+
+@media(max-width:600px){
+  #page-cases .section-subtitle,#page-about .section-subtitle,#page-partner .section-subtitle,#page-contact .section-subtitle{font-size:15px}
+  .footer{padding:64px 0 32px}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+}

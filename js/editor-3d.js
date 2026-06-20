@@ -1566,11 +1566,11 @@ function initPalette() {
     </div>
   `}).join('');
 
-  // 默认折叠
+  // 模块面板默认展开，进入设计器即可看到可用模块。
   const header = document.getElementById('modulePaletteHeader');
   const palette = document.getElementById('modulePalette');
-  if (header) header.classList.add('collapsed');
-  if (palette) palette.classList.add('collapsed');
+  if (header) header.classList.remove('collapsed');
+  if (palette) palette.classList.remove('collapsed');
 }
 
 window.toggleModulePalette = function() {
@@ -1677,6 +1677,11 @@ function animate() {
 }
 
 window.initEditor = function() {
+  if (window.editorReady) {
+    initEditor3D();
+    onResize();
+    return;
+  }
   // console.log('MGILT Editor: initEditor called');
   initPalette();
   initSceneElementPalette();

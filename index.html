@@ -9,12 +9,12 @@
 <link rel="stylesheet" href="css/product-system.css">
 <script src="js/gsap.min.js"></script>
 <script src="js/ScrollTrigger.min.js"></script>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+<script src="js/xlsx.full.min.js"></script>
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    "three": "./js/three.module.js",
+    "three/addons/": "./js/"
   }
 }
 </script>
@@ -1004,6 +1004,8 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 .home-hero-new .hero-content .btns{width:90%}
 }
 </style>
+<link rel="stylesheet" href="css/home-content.css">
+<link rel="stylesheet" href="css/site-consistency.css">
 </head>
 <body>
 
@@ -1014,8 +1016,8 @@ input,select,textarea{font-family:inherit;font-size:inherit}
   <div class="nav-links">
     <a href="#home" data-page="home">首页</a>
     <a href="#system" data-page="system">产品系统</a>
-    <a href="#cases" data-page="cases">空间灵感</a>
-    <a href="#editor" data-page="editor">设计你的MGILT</a>
+    <a href="#cases" data-page="cases">应用案例</a>
+    <a href="#editor" data-page="editor">在线设计器</a>
     <a href="#about" data-page="about">关于MGILT</a>
     <a href="#partner" data-page="partner" class="nav-partner">合作伙伴</a>
   </div>
@@ -1043,8 +1045,8 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 <div class="mobile-menu" id="mobileMenu">
   <a href="#home" data-page="home">首页 Home</a>
   <a href="#system" data-page="system">产品系统 System</a>
-  <a href="#cases" data-page="cases">空间灵感 Cases</a>
-  <a href="#editor" data-page="editor">设计你的MGILT Editor</a>
+  <a href="#cases" data-page="cases">应用案例 Cases</a>
+  <a href="#editor" data-page="editor">在线设计器 Editor</a>
   <a href="#about" data-page="about">关于MGILT About</a>
   <a href="#partner" data-page="partner">合作伙伴 Partner</a>
   <a href="#login" data-page="login" id="mobileNavLogin">登录 Login</a>
@@ -1055,80 +1057,55 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 <!-- PAGE: HOME -->
 <section class="page active" id="page-home">
   <div class="home-hero-new" id="heroSection">
-
-    <!-- 背景网格 -->
-    <div class="hex-bg" id="hexBg"></div>
-
-    <!-- 顶部导航 -->
-    <nav class="hero-nav" id="heroNav">
-      <div class="brand">
-        <div class="dot"></div>
-        <span>MGILT</span>
+    <div class="hero-bg-image" id="heroBgImage">
+      <img src="images/1780211741869-612126731.jpg" alt="MGILT 草坪音乐节" class="active" loading="eager">
+      <img src="images/1780211749267-632290919.jpg" alt="MGILT 城市广场" loading="lazy">
+      <img src="images/1780211755133-827394954.jpg" alt="MGILT 文化庭院" loading="lazy">
+      <img src="images/1780295467165-322298093.jpg" alt="MGILT 空间场景" loading="lazy">
+    </div>
+    <nav class="hero-overlay-nav">
+      <div class="hero-nav-left"><div class="hero-brand"><img src="images/1780281106120-155337974.png" alt="MGILT Logo"></div></div>
+      <div class="hero-nav-center">
+        <a href="#home" onclick="navigateTo('home')">首页</a><a href="#system" onclick="navigateTo('system')">产品模块系统</a><a href="#cases" onclick="navigateTo('cases')">场景方案与案例库</a><a href="#editor" onclick="navigateTo('editor')">在线设计器</a><a href="#about" onclick="navigateTo('about')">关于 MGILT</a><a href="#partner" onclick="navigateTo('partner')">合作伙伴</a>
       </div>
-      <div class="links">
-        <a href="#home" onclick="navigateTo('home')">首页</a>
-        <a href="#system" onclick="navigateTo('system')">产品系统</a>
-        <a href="#cases" onclick="navigateTo('cases')">空间灵感</a>
-        <a href="#editor" onclick="navigateTo('editor')">设计你的MGILT</a>
-        <a href="#about" onclick="navigateTo('about')">关于MGILT</a>
-        <a href="#partner" onclick="navigateTo('partner')">合作伙伴</a>
-      </div>
-      <div class="icons">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-        </svg>
-      </div>
+      <div class="hero-nav-right"><a href="#login" class="nav-icon-link" onclick="navigateTo('login')" aria-label="登录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a><button class="nav-icon-link" onclick="showSearch()" aria-label="查询"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button></div>
     </nav>
-
-    <!-- 六边形集群 -->
-    <div class="hex-layer" id="hexLayer"></div>
-
-    <!-- Logo 动画 -->
-    <div class="hero-logo" id="heroLogo">
-      <h1>M<span style="margin: 0 0.1em">G</span>ILT</h1>
+    <div class="hero-main-content">
+      <div class="hero-text-block"><h1 class="hero-title">MGILT 城市绿岛系列</h1><h2 class="hero-subtitle">比传统搭建更快、更省、更灵活的模块化空间系统</h2></div>
+      <div class="hero-buttons"><a href="#cases" class="hero-btn hero-btn-primary" onclick="navigateTo('cases')"><span>查看适合我的场景</span><span>→</span></a><a href="#editor" class="hero-btn hero-btn-secondary" onclick="navigateTo('editor')"><span>进入在线设计器</span><span>→</span></a></div>
     </div>
-
-    <!-- 正常内容 -->
-    <div class="hero-content" id="heroContent">
-      <div class="label">HEX MODULAR SYSTEM</div>
-      <div class="title">M<span>G</span>ILT</div>
-      <div class="tagline">模块化生态空间 · 自由构建未来</div>
-      <div class="btns">
-        <a href="#system" class="btn btn-pri" onclick="navigateTo('system')">
-          探索系统
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#editor" class="btn btn-out" onclick="navigateTo('editor')">
-          开始设计
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- 左下角 -->
-    <div class="edit-l" id="editL">
-      <span>© 2026 MGILT</span>
-      <span id="imgCtr"></span>
-    </div>
-
-    <!-- 右下角 -->
-    <div class="edit-r" id="editR">
-      <span>Modular Flexibility</span>
-      <div class="ln"></div>
-    </div>
-
+    <div class="hero-scroll-hint"><span>向下滚动</span><div class="scroll-arrow"></div></div>
   </div>
+
+  <section class="home-section home-section-2" id="section-what">
+    <div class="what-bg"></div>
+    <div class="what-img-left what-img-left-1"><img src="images/1780462178139-236523800.jpg" alt="MGILT 模块场景" loading="lazy"></div>
+    <div class="what-img-left what-img-left-2"><img src="images/1780243412741-325092500.jpg" alt="MGILT 空间方案" loading="lazy"></div>
+    <div class="what-img-right what-img-right-1"><img src="images/1780462197260-274622009.jpg" alt="MGILT 场景应用" loading="lazy"></div>
+    <div class="what-img-right what-img-right-2"><img src="images/1780244600400-833049816.jpg" alt="MGILT 产品展示" loading="lazy"></div>
+    <div class="what-center home-heading"><span class="home-label">What is MGILT</span><h2 class="home-title">什么是MGILT麦吉花园</h2><h3 class="home-subtitle">城市绿岛系列 V4.0 模块化生态家具系统</h3><p class="what-main-desc">MGILT 是一套以六边形模块为基础的模块化生态家具系统。<br>哑光金属骨架与温润木质面板形成扎实的体量感，模块可直接铺设于原有地面，无需破坏性开挖。<br>放低是坐具，抬高是吧台，中空是花箱，<br>1+N 的高低错落组合，可将零散的户外死角快速转化为完整的社交、休憩与生态场景。</p></div>
+  </section>
+
+  <section class="home-section home-section-3" id="section-why">
+    <div class="why-container"><div class="why-header home-heading"><span class="home-label">Why MGILT</span><h2 class="home-title">为什么选择 MGILT模块化</h2><p class="home-subtitle">理性构建，让空间自然发生</p></div>
+      <div class="why-carousel-new" id="whyCarouselNew"><div class="why-side-img" id="whySideLeft"><img src="images/1780243619027-692052585.jpg" alt="上一张"></div><div class="why-main-img" id="whyMainImg"><img id="whyMainImage" src="images/1780243581594-981682795.jpg" alt="模块一上场，空间就开场"><div class="why-img-title"><h3 id="whyTitle">模块一上场，空间就开场</h3><p id="whyDesc">告别死板非标定制，490mm模数组合系统，灵活适配各类场景</p></div></div><div class="why-side-img" id="whySideRight"><img src="images/1780243588448-92696485.jpg" alt="下一张"></div><button class="why-arrow-btn why-arrow-prev" id="whyArrowPrev" aria-label="上一项">‹</button><button class="why-arrow-btn why-arrow-next" id="whyArrowNext" aria-label="下一项">›</button></div>
+      <div class="why-dots" id="whyDots"><button class="why-dot active" data-index="0" aria-label="第 1 项"></button><button class="why-dot" data-index="1" aria-label="第 2 项"></button><button class="why-dot" data-index="2" aria-label="第 3 项"></button><button class="why-dot" data-index="3" aria-label="第 4 项"></button><button class="why-dot" data-index="4" aria-label="第 5 项"></button><button class="why-dot" data-index="5" aria-label="第 6 项"></button><button class="why-dot" data-index="6" aria-label="第 7 项"></button></div>
+    </div>
+  </section>
+
+  <section class="home-section home-section-4" id="section-scenes">
+    <div class="scenes-container"><div class="scenes-header home-heading"><span class="home-label">Scenarios with MGILT</span><h2 class="home-title">麦吉满足多元场景</h2><p class="home-subtitle">一套系统，从容应对多种空间可能</p></div>
+      <div class="scenes-switcher"><div class="scenes-left-panel"><div class="scenes-main-card"><img id="scenesMainImg" src="images/1780295467165-322298093.jpg" alt="城市公共景观"><div class="scenes-main-label" id="scenesMainLabel">城市公共景观</div><button class="scenes-arrow-btn scenes-arrow-prev" id="scenesArrowPrev" aria-label="上一个场景">‹</button><button class="scenes-arrow-btn scenes-arrow-next" id="scenesArrowNext" aria-label="下一个场景">›</button></div><div class="scenes-thumbs" id="scenesThumbs"><button class="scenes-thumb active" data-index="0"><img src="images/1780295467165-322298093.jpg" alt="城市公共景观"></button><button class="scenes-thumb" data-index="1"><img src="images/1780139052593-236600565.jpg" alt="文旅与露营度假"></button><button class="scenes-thumb" data-index="2"><img src="images/1780139059585-792067431.jpg" alt="教育与校园空间"></button><button class="scenes-thumb" data-index="3"><img src="images/1780295437020-717958591.jpg" alt="商业地产与示范区"></button><button class="scenes-thumb" data-index="4"><img src="images/1780295444122-4886938.jpg" alt="社区与庭院家居"></button><button class="scenes-thumb" data-index="5"><img src="images/1780139081111-84146912.jpg" alt="乡村振兴与美丽乡村"></button></div></div><div class="scenes-right-panel"><div class="scenes-right-img"><img id="scenesRightImage" src="images/1780139052593-236600565.jpg" alt="场景图"><div class="scenes-accessory-label">定制款配件</div></div><div class="scenes-footer"><a href="#editor" class="scenes-cta-btn" onclick="navigateTo('editor')">进入在线设计器 <span>→</span></a></div></div></div>
+    </div>
+  </section>
 </section>
 
 <!-- PAGE: PRODUCT SYSTEM -->
 <section class="page" id="page-system">
   <div class="ps-hero">
     <div class="ps-hero-content">
-      <div class="ps-kicker">The Product System</div>
-      <h1 class="ps-title">MGILT 城市绿岛系列 V4.0</h1>
+      <div class="ps-kicker">THE SYSTEM</div>
+      <h1 class="ps-title">MGILT 城市绿岛六边形模块化系统</h1>
       <p class="ps-copy">更快、更省、更好、更耐久</p>
       <div class="ps-tags">
         <span class="ps-tag">1–2 天搭建</span><span class="ps-tag">2–4 人组装</span>
@@ -1146,7 +1123,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 
   <div class="ps-section ps-modules" id="product-modules">
     <div class="ps-inner">
-      <div class="ps-heading"><div><div class="ps-kicker">Core Modules</div><h2 class="ps-title">九大核心模块</h2></div><p class="ps-copy">为秩序而生，为变化而设。统一的六边形接口，让不同高度与功能的模块自由组合。</p></div>
+      <div class="ps-heading"><div><div class="ps-kicker">THE SYSTEM</div><h2 class="ps-title">九大核心模块</h2></div><p class="ps-copy">为秩序而生，为变化而设</p></div>
       <div class="ps-group"><div class="ps-group-title">空间基础模块</div><div class="ps-grid">
         <article class="ps-card"><div class="ps-card-image"><img src="images/1780244600400-833049816.jpg" alt="踏板" loading="lazy"></div><div class="ps-card-body"><h3>踏板</h3><div class="ps-card-size">边长 490mm / 高 60mm</div><p class="ps-card-desc">防滑耐腐，草地无痕直铺</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板材<br>环保塑木板</p></div></article>
         <article class="ps-card"><div class="ps-card-image"><img src="images/1780244606863-985264005.jpg" alt="矮阶坐凳" loading="lazy"></div><div class="ps-card-body"><h3>矮阶坐凳</h3><div class="ps-card-size">边长 490mm / 高 260mm</div><p class="ps-card-desc">亲子尺度，打造全龄友好</p><p class="ps-card-meta">喷塑镀锌钢框架、PP 环保板构<br>环保塑木板</p></div></article>
@@ -1166,7 +1143,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
   </div>
 
   <div class="ps-section ps-colors"><div class="ps-inner">
-    <div class="ps-kicker">Standard Frame Colors</div><h2 class="ps-title">MGILT 标准色系统</h2><p class="ps-copy">三款标准色均为钢管框架涂层烤漆色，用于模块骨架与结构件呈现不同场景风格。标准色 2–3 周出货；定制色请联系城市服务商。</p>
+    <div class="ps-kicker">Brand Colors</div><h2 class="ps-title">MGILT 标准色系统</h2><p class="ps-copy">标准色用于模块骨架、面板、导视与品牌物料，保证项目从产品到现场呈现统一、可识别。</p>
     <div class="ps-color-grid">
       <article class="ps-color"><img src="images/1781670227938-633550722.jpg" alt="Frame Orange" loading="lazy"><div class="ps-color-info"><div class="ps-swatch" style="background:#F57E2C"></div><h3>Frame Orange</h3><p>适合高识别度、活力型公共空间。</p></div></article>
       <article class="ps-color"><img src="images/1781670333945-685153502.jpg" alt="Frame Sky Blue" loading="lazy"><div class="ps-color-info"><div class="ps-swatch" style="background:#ADD8E9"></div><h3>Frame Sky Blue</h3><p>适合轻盈、清爽的校园与社区场景。</p></div></article>
@@ -1185,7 +1162,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
   </div></div>
 
   <div class="ps-section ps-details"><div class="ps-inner">
-    <div class="ps-kicker">MGILT 麦吉蓝图</div><h2 class="ps-title">让小微空间成为城市更新的民生触点</h2><p class="ps-copy">无需开挖、快速铺设、灵活组合，<br>让社区、街角、庭院与商业外摆都能快速生成<br>可停留、可交流、可生长的日常绿岛</p>
+    <div class="ps-kicker">Intent in every detail</div><h2 class="ps-title">让小微空间成为城市更新的民生触点</h2><p class="ps-copy">从选择到落地，让订购更简单、更高效、更安心</p>
     <div class="ps-split"><div class="ps-tabs">
       <button type="button" class="ps-tab active" data-ps-detail data-title="全龄友好" data-image="images/1780283995729-924137313.jpg" data-description="为儿童、老人和不同使用者提供可坐、可停留、可互动的日常公共空间。"><strong>全龄友好</strong><span>回应多元人群的日常需求</span></button>
       <button type="button" class="ps-tab" data-ps-detail data-title="社区活力" data-image="images/1780284014765-983873854.jpg" data-description="把闲置边角空间转化为居民愿意停留、交流与参与的公共节点。"><strong>社区活力</strong><span>让闲置空间成为交流节点</span></button>
@@ -1195,7 +1172,7 @@ input,select,textarea{font-family:inherit;font-size:inherit}
   </div></div>
 
   <div class="ps-section ps-order"><div class="ps-inner">
-    <div class="ps-kicker">Just Four Steps to Order MGILT</div><h2 class="ps-title">订购麦吉花园，只需四步</h2><p class="ps-copy">从选择到落地，让订购更简单、更高效、更安心</p><div class="ps-delivery"><span>标准品出单</span><strong>2–3 周</strong></div>
+    <div class="ps-kicker">Order MGILT</div><h2 class="ps-title">订购麦吉，只需四步</h2><p class="ps-copy">从选择到落地，让订购更简单、更高效、更安心</p><div class="ps-delivery"><span>标准品出单</span><strong>2–3 周</strong></div>
     <div class="ps-order-layout"><div class="ps-order-image"><img id="psOrderImage" src="images/1780244883146-844186642.jpg" alt="场景匹配" loading="lazy"></div><div>
       <div class="ps-order-steps">
         <button type="button" class="ps-order-step active" data-ps-order data-title="场景匹配" data-image="images/1780244883146-844186642.jpg"><span class="ps-order-num">01</span><span><strong>场景匹配</strong><p>根据空间大小、功能需求和预算，推荐适合的模块组合。</p></span></button>
@@ -1222,7 +1199,6 @@ input,select,textarea{font-family:inherit;font-size:inherit}
         <button onclick="editorAction('screenshot')">截图</button>
         <button onclick="exportDesignExcel()" style="background:var(--sage);color:white">导出报表</button>
               </div>
-      <div class="editor-toolbar-title">MGILT 空间设计台</div>
       <div class="editor-toolbar-right" style="display:flex;gap:8px;align-items:center">
         <button onclick="setCameraView('top')">俯视</button>
         <button onclick="setCameraView('front')">正面</button>
@@ -1777,8 +1753,11 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 
   <div class="partner-opportunity" id="partner-apply">
     <div class="container">
-      <div class="section-label reveal">Market Opportunity</div>
-      <div class="section-title reveal">市场机会</div>
+      <div class="section-heading">
+        <div class="section-label reveal">Market Opportunity</div>
+        <div class="section-title reveal">市场机会</div>
+        <p class="section-subtitle reveal">面向户外生活方式、文旅营地与商业空间更新，MGILT 提供更轻量、可复制的空间产品机会。</p>
+      </div>
       <div class="opportunity-grid">
         <div class="opp-card reveal">
           <div class="opp-stat">68%</div>
@@ -1804,8 +1783,11 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 
   <div class="partner-advantages">
     <div class="container">
-      <div class="section-label reveal">Product Advantages</div>
-      <div class="section-title reveal">产品优势</div>
+      <div class="section-heading">
+        <div class="section-label reveal">Product Advantages</div>
+        <div class="section-title reveal">产品优势</div>
+        <p class="section-subtitle reveal">以模块化结构、标准化交付和可持续运营能力，帮助合作伙伴降低项目沟通与落地成本。</p>
+      </div>
       <div class="adv-grid">
         <div class="adv-card reveal">
           <div class="adv-icon"><svg viewBox="0 0 32 32"><rect x="4" y="4" width="10" height="10"/><rect x="18" y="4" width="10" height="10"/><rect x="11" y="18" width="10" height="10"/><line x1="9" y1="14" x2="9" y2="18"/><line x1="23" y1="14" x2="23" y2="18"/><line x1="16" y1="14" x2="16" y2="18"/></svg></div>
@@ -1951,6 +1933,43 @@ input,select,textarea{font-family:inherit;font-size:inherit}
   </div>
 </section>
 
+<footer class="footer" id="mainFooter">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">MGILT</div>
+        <p class="footer-desc">模块化生态空间系统，为城市公共空间、商业外摆、文旅营地与社区更新提供可复制、可维护的产品化解决方案。</p>
+        <div class="footer-newsletter">
+          <input type="email" id="footerNewsletterEmail" placeholder="留下邮箱获取资料">
+          <button type="button" onclick="showToast('success','感谢关注，我们会尽快与您联系')">提交</button>
+        </div>
+      </div>
+      <div>
+        <h4>快速导航</h4>
+        <a href="#home" onclick="navigateTo('home')">首页</a>
+        <a href="#system" onclick="navigateTo('system')">产品模块系统</a>
+        <a href="#cases" onclick="navigateTo('cases')">场景方案与案例库</a>
+        <a href="#editor" onclick="navigateTo('editor')">在线设计器</a>
+        <a href="#about" onclick="navigateTo('about')">关于 MGILT</a>
+      </div>
+      <div>
+        <h4>合作服务</h4>
+        <a href="#partner" onclick="navigateTo('partner')">成为合作伙伴</a>
+        <a href="#partner" onclick="navigateTo('partner')">城市服务商</a>
+        <a href="#cases" onclick="navigateTo('cases')">项目案例</a>
+        <a href="#system" onclick="navigateTo('system')">产品与配套</a>
+      </div>
+      <div>
+        <h4>联系我们</h4>
+        <p class="footer-desc">上海市徐汇区龙腾大道2937号1-7<br>18601600832<br>info@mgilt.com</p>
+        <h4 style="margin-top:24px">关注我们</h4>
+        <p class="footer-desc">微信公众号：MGILT麦吉蓝图<br>小红书：麦吉花园</p>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 MGILT. All rights reserved.</span><span></span></div>
+  </div>
+</footer>
+
 <script type="module">
 /* === MODULE DATA === */
 const MODULES=[
@@ -2001,7 +2020,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
-window.toggleModulePalette=function(){const h=document.getElementById('modulePaletteHeader');const p=document.getElementById('modulePalette');const isCollapsed=h.classList.contains('collapsed');if(isCollapsed){h.classList.remove('collapsed');p.style.display='block'}else{h.classList.add('collapsed');p.style.display='none'}};
 function showTab(tab){
   if(tab==='login'){
     document.getElementById('tabLogin').className='login-tab active';
@@ -2029,7 +2047,9 @@ function handleRoute(){
   const footer=document.getElementById('mainFooter');
   if(footer) footer.style.display=hideFooter.includes(hash)?'none':'block';
   setTimeout(initPageAnimations,150);
-  if(hash==='editor') setTimeout(initEditor,200);
+  if(hash==='editor' && typeof window.initEditor==='function') {
+    setTimeout(function(){ window.initEditor(); },200);
+  }
   if(hash==='home') initHomeVisuals();
   if(hash==='system') initSystemDiagram();
   if(hash==='cases') initCasesNew();
@@ -2408,6 +2428,10 @@ function showContent() {
 function initHomeVisuals() {
   const section = document.getElementById('heroSection');
   if (!section) return;
+
+  // 首页沿用本站原有全局导航，不启用旧六边形首屏导航动画。
+  document.getElementById('mainNav')?.classList.remove('hidden');
+  return;
 
   // 动画还在进行时，隐藏全局导航栏，显示六边形层
   if (st.isIntro) {
@@ -2947,7 +2971,6 @@ const PROJECTS=[
   {id:2,title:'巨鹿路西班牙餐厅',category:'商业空间',location:'上海',modules:['Module A','Module B','Module E'],images:['images/project2-1.webp','images/project2-2.webp'],alignment:'right'},
   {id:3,title:'开放办公空间',category:'公共空间',location:'上海',modules:['Module B','Module D','Module F'],images:['images/project3-1.webp','images/project3-2.webp'],alignment:'left'},
   {id:4,title:'徐汇西岸咖啡厅',category:'商业空间',location:'上海',modules:['Module C','Module G','Module H'],images:['images/xuhu-westbank-1.webp','images/xuhu-westbank-2.webp'],alignment:'right'},
-  {id:5,title:'山间冥想亭',category:'公共空间',location:'杭州 · 西湖',modules:['Module A','Module S'],images:['https://picsum.photos/seed/mgilt5a/2000/1200','https://picsum.photos/seed/mgilt5b/2000/1200'],alignment:'left'},
 ];
 function initCasesNew(filter='all'){
   const flow=document.getElementById('casesFlow');if(!flow)return;
@@ -3247,7 +3270,9 @@ window.addEventListener('error', function(e) {
 });
 </script>
 <script src="./js/product-system.js"></script>
-<script type="module" src="./js/editor-3d.js"></script>
+<script src="./js/home-content.js"></script>
+<!-- 3D 编辑器已打包为本地单文件，避免 CDN 或 file:// 模块加载失败。 -->
+<script src="./js/editor-3d.bundle.js"></script>
   <!-- 回到顶部按钮 -->
   <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
