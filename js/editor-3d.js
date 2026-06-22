@@ -7,19 +7,19 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // console.log('OrbitControls imported:', !!OrbitControls);
 
 const MODULES = [
-  { id:0, name:'踏面', code:'M-V4-PT-0-S', height:50,  type:'step',    desc:'50mm高度 / 边长490mm', price:699, color:'#5B8C5A' },
-  { id:1, name:'低坐凳', code:'M-V4-BN-2-S', height:280, type:'seat',   desc:'280mm高度 / 边长490mm', price:1499, color:'#7A9E7E' },
-  { id:2, name:'低种植', code:'M-V4-PL-3-S', height:380, type:'planter', desc:'380mm高度 / 边长490mm', price:1699, color:'#BFA27A' },
-  { id:3, name:'高坐凳', code:'M-V4-BN-4-S', height:480, type:'seat',    desc:'480mm高度 / 边长490mm', price:1899, color:'#8B7EB8' },
-  { id:4, name:'高种植', code:'M-V4-PL-5-S', height:580, type:'planter', desc:'580mm高度 / 边长490mm', price:2099, color:'#A0887A' },
-  { id:5, name:'桌台', code:'M-V4-TB-7-S', height:780, type:'table',   desc:'780mm高度 / 边长490mm', price:2399, color:'#5A7A8B' },
+  { id:0, name:'踏面', code:'M-V4-PT-0-S', height:50,  type:'step',    desc:'50mm高度 / 边长490mm', price:699, color:'#5B8C5A', image:'images/module-pt-0-s-tamian.webp' },
+  { id:1, name:'低坐凳', code:'M-V4-BN-2-S', height:280, type:'seat',   desc:'280mm高度 / 边长490mm', price:1499, color:'#7A9E7E', image:'images/module-bn-2-s-zuodeng.webp' },
+  { id:2, name:'低种植', code:'M-V4-PL-3-S', height:380, type:'planter', desc:'380mm高度 / 边长490mm', price:1699, color:'#BFA27A', image:'images/module-pl-3-s-dizhognzhi-1.webp' },
+  { id:3, name:'高坐凳', code:'M-V4-BN-4-S', height:480, type:'seat',    desc:'480mm高度 / 边长490mm', price:1899, color:'#8B7EB8', image:'images/module-bn-4-s-gaozuodeng.webp' },
+  { id:4, name:'高种植', code:'M-V4-PL-5-S', height:580, type:'planter', desc:'580mm高度 / 边长490mm', price:2099, color:'#A0887A', image:'images/module-pl-5-s-gaozhongzhi-1.webp' },
+  { id:5, name:'桌台', code:'M-V4-TB-7-S', height:780, type:'table',   desc:'780mm高度 / 边长490mm', price:2399, color:'#5A7A8B', image:'images/module-tb-7-s-zhuotai.webp' },
 ];
 
 const FRAME_COLOR = 0x3D3530;
 const WOOD_SIDE  = 0xC8A060;
 const WOOD_SIDE2 = 0xB89050;
-const WOOD_TOP   = 0xD4B078;
-const SOIL_TOP   = 0x7BA832;
+const SURFACE_TOP = 0xAAA8A3;
+const SOIL_TOP    = 0x554536;
 const STEP_COLOR = 0xB8B8B0;
 const FRAME_T = 0.03;
 const HEX_SIDE = 490;
@@ -449,7 +449,7 @@ function addTopFace(group, R, h, moduleType, ghost) {
   const topShape = createHexShape(R - inset);
   const topGeo = new THREE.ShapeGeometry(topShape);
   const isPlanter = moduleType === 'planter';
-  const color = isPlanter ? SOIL_TOP : WOOD_TOP;
+  const color = isPlanter ? SOIL_TOP : SURFACE_TOP;
   const topMat = new THREE.MeshStandardMaterial({
     color, roughness: isPlanter ? 0.95 : 0.65, metalness: 0,
     transparent: ghost, opacity: ghost ? 0.35 : 1
@@ -1556,7 +1556,7 @@ function initPalette() {
     return `
     <div class="palette-item${i === 0 ? ' selected' : ''}" data-mod="${m.id}" onclick="selectModule3D(${m.id}, this)">
       <div class="module-thumbnail">
-        <div class="module-hex" style="background:${m.color}"></div>
+        <img src="${m.image}" alt="" loading="lazy">
       </div>
       <div class="palette-info">
         <strong>${m.name}</strong>
@@ -2243,12 +2243,13 @@ window.toggleSceneElementMode = function(elementId) {
     return;
   }
 
-  if (sceneElementMode) {
-    // 关闭模式
+  const isSameActiveElement = sceneElementMode && currentElementConfig?.id === elementId;
+  if (isSameActiveElement) {
+    // 再次点击当前元素时关闭放置模式
     sceneElementMode = false;
-    // console.log('场景元素模式: 关闭');
+    document.querySelectorAll('.scene-element-item').forEach(item => item.classList.remove('selected'));
   } else {
-    // 开启模式前先关闭选择模式
+    // 首次选择或切换到另一个场景元素
     if (elementSelectMode) {
       elementSelectMode = false;
       const selectBtn = document.getElementById('btn-select-element');
@@ -2265,7 +2266,6 @@ window.toggleSceneElementMode = function(elementId) {
     if (!currentSceneElementModel || currentSceneElementModel.userData.elementType !== elementId) {
       window.loadSceneElementModel(elementId);
     }
-    // console.log('场景元素模式: 开启', config.name);
   }
 };
 

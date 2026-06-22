@@ -27348,18 +27348,18 @@ void main() {
 
   // js/editor-3d.js
   var MODULES = [
-    { id: 0, name: "\u8E0F\u9762", code: "M-V4-PT-0-S", height: 50, type: "step", desc: "50mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 699, color: "#5B8C5A" },
-    { id: 1, name: "\u4F4E\u5750\u51F3", code: "M-V4-BN-2-S", height: 280, type: "seat", desc: "280mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 1499, color: "#7A9E7E" },
-    { id: 2, name: "\u4F4E\u79CD\u690D", code: "M-V4-PL-3-S", height: 380, type: "planter", desc: "380mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 1699, color: "#BFA27A" },
-    { id: 3, name: "\u9AD8\u5750\u51F3", code: "M-V4-BN-4-S", height: 480, type: "seat", desc: "480mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 1899, color: "#8B7EB8" },
-    { id: 4, name: "\u9AD8\u79CD\u690D", code: "M-V4-PL-5-S", height: 580, type: "planter", desc: "580mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 2099, color: "#A0887A" },
-    { id: 5, name: "\u684C\u53F0", code: "M-V4-TB-7-S", height: 780, type: "table", desc: "780mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 2399, color: "#5A7A8B" }
+    { id: 0, name: "\u8E0F\u9762", code: "M-V4-PT-0-S", height: 50, type: "step", desc: "50mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 699, color: "#5B8C5A", image: "images/module-pt-0-s-tamian.webp" },
+    { id: 1, name: "\u4F4E\u5750\u51F3", code: "M-V4-BN-2-S", height: 280, type: "seat", desc: "280mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 1499, color: "#7A9E7E", image: "images/module-bn-2-s-zuodeng.webp" },
+    { id: 2, name: "\u4F4E\u79CD\u690D", code: "M-V4-PL-3-S", height: 380, type: "planter", desc: "380mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 1699, color: "#BFA27A", image: "images/module-pl-3-s-dizhognzhi-1.webp" },
+    { id: 3, name: "\u9AD8\u5750\u51F3", code: "M-V4-BN-4-S", height: 480, type: "seat", desc: "480mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 1899, color: "#8B7EB8", image: "images/module-bn-4-s-gaozuodeng.webp" },
+    { id: 4, name: "\u9AD8\u79CD\u690D", code: "M-V4-PL-5-S", height: 580, type: "planter", desc: "580mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 2099, color: "#A0887A", image: "images/module-pl-5-s-gaozhongzhi-1.webp" },
+    { id: 5, name: "\u684C\u53F0", code: "M-V4-TB-7-S", height: 780, type: "table", desc: "780mm\u9AD8\u5EA6 / \u8FB9\u957F490mm", price: 2399, color: "#5A7A8B", image: "images/module-tb-7-s-zhuotai.webp" }
   ];
   var FRAME_COLOR = 4011312;
   var WOOD_SIDE = 13148256;
   var WOOD_SIDE2 = 12095568;
-  var WOOD_TOP = 13938808;
-  var SOIL_TOP = 8103986;
+  var SURFACE_TOP = 11184291;
+  var SOIL_TOP = 5588278;
   var STEP_COLOR = 12105904;
   var FRAME_T = 0.03;
   var HEX_SIDE = 490;
@@ -27720,7 +27720,7 @@ void main() {
     const topShape = createHexShape(R - inset);
     const topGeo = new ShapeGeometry(topShape);
     const isPlanter = moduleType === "planter";
-    const color = isPlanter ? SOIL_TOP : WOOD_TOP;
+    const color = isPlanter ? SOIL_TOP : SURFACE_TOP;
     const topMat = new MeshStandardMaterial({
       color,
       roughness: isPlanter ? 0.95 : 0.65,
@@ -28707,7 +28707,7 @@ void main() {
       return `
     <div class="palette-item${i === 0 ? " selected" : ""}" data-mod="${m.id}" onclick="selectModule3D(${m.id}, this)">
       <div class="module-thumbnail">
-        <div class="module-hex" style="background:${m.color}"></div>
+        <img src="${m.image}" alt="" loading="lazy">
       </div>
       <div class="palette-info">
         <strong>${m.name}</strong>
@@ -29275,8 +29275,10 @@ void main() {
       if (window.showToast) window.showToast("info", config.name + " \u6A21\u578B\u5F85\u6DFB\u52A0");
       return;
     }
-    if (sceneElementMode) {
+    const isSameActiveElement = sceneElementMode && currentElementConfig?.id === elementId;
+    if (isSameActiveElement) {
       sceneElementMode = false;
+      document.querySelectorAll(".scene-element-item").forEach((item) => item.classList.remove("selected"));
     } else {
       if (elementSelectMode) {
         elementSelectMode = false;
