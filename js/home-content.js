@@ -24,15 +24,49 @@
     ['images/1780462223868-34359299.jpg','images/1780243520383-121803990.jpg','images/1780462235260-450668796.jpg','images/1780462240397-103612468.jpg','images/1780462248341-538886294.jpg','images/1780243540431-118346097.jpg','images/1780462254245-40499997.jpg','images/1780243555289-281501703.jpg','images/1780243560242-586676594.jpg']
   ];
   function init(){
+    function hydrateImages(section){
+      if(!section)return;
+      section.querySelectorAll('img[data-src]').forEach(function(image){
+        image.src=image.dataset.src;
+        image.removeAttribute('data-src');
+      });
+    }
+    function hydrateNearViewport(section){
+      if(!section)return;
+      if(!('IntersectionObserver' in window)){hydrateImages(section);return;}
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting)return;
+          hydrateImages(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },{rootMargin:'600px 0px',threshold:0});
+      observer.observe(section);
+    }
+
     var heroImages=document.querySelectorAll('#heroBgImage img'),heroIndex=0;
     if(heroImages.length>1)setInterval(function(){heroImages[heroIndex].classList.remove('active');heroIndex=(heroIndex+1)%heroImages.length;heroImages[heroIndex].classList.add('active');},5200);
 
     var what=document.getElementById('section-what');
-    if(what&&'IntersectionObserver' in window)new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.querySelectorAll('.what-img-left,.what-img-right').forEach(function(el){el.classList.add('animate-in');});});},{threshold:.24}).observe(what);
     var whatContainers=[document.querySelector('.what-img-left-1'),document.querySelector('.what-img-right-1'),document.querySelector('.what-img-left-2'),document.querySelector('.what-img-right-2')];
     var whatIndexes=[1,1,1,1];
-    whatContainers.forEach(function(container,index){if(container&&whatSlots[index][1])container.querySelector('img').src=whatSlots[index][1];});
-    setInterval(function(){whatContainers.forEach(function(container,index){if(!container||whatSlots[index].length<2)return;setTimeout(function(){whatIndexes[index]=(whatIndexes[index]+1)%whatSlots[index].length;container.classList.add('is-changing');setTimeout(function(){var image=container.querySelector('img');image.onload=function(){container.classList.remove('is-changing');};image.src=whatSlots[index][whatIndexes[index]];if(image.complete)container.classList.remove('is-changing');},420);},index*180);});},3600);
+    var whatStarted=false;
+    function startWhat(){
+      if(whatStarted)return;
+      whatStarted=true;
+      hydrateImages(what);
+      what.querySelectorAll('.what-img-left,.what-img-right').forEach(function(el){el.classList.add('animate-in');});
+      setInterval(function(){whatContainers.forEach(function(container,index){if(!container||whatSlots[index].length<2)return;setTimeout(function(){whatIndexes[index]=(whatIndexes[index]+1)%whatSlots[index].length;container.classList.add('is-changing');setTimeout(function(){var image=container.querySelector('img');image.onload=function(){container.classList.remove('is-changing');};image.src=whatSlots[index][whatIndexes[index]];if(image.complete)container.classList.remove('is-changing');},420);},index*180);});},3600);
+    }
+    if(what){
+      if('IntersectionObserver' in window){
+        var whatObserver=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){startWhat();whatObserver.unobserve(entry.target);}});},{rootMargin:'600px 0px',threshold:0});
+        whatObserver.observe(what);
+      }else startWhat();
+    }
+
+    hydrateNearViewport(document.getElementById('section-why'));
+    hydrateNearViewport(document.getElementById('section-scenes'));
 
     var whyIndex=0,whyMain=document.getElementById('whyMainImage'),whyTitle=document.getElementById('whyTitle'),whyDesc=document.getElementById('whyDesc'),whyLeft=document.querySelector('#whySideLeft img'),whyRight=document.querySelector('#whySideRight img'),whyDots=document.querySelectorAll('#whyDots .why-dot');
     function showWhy(index){whyIndex=(index+whyItems.length)%whyItems.length;var item=whyItems[whyIndex],prev=whyItems[(whyIndex-1+whyItems.length)%whyItems.length],next=whyItems[(whyIndex+1)%whyItems.length];whyMain.src=item[2];whyMain.alt=item[0];whyTitle.textContent=item[0];whyDesc.textContent=item[1];whyLeft.src=prev[2];whyRight.src=next[2];whyDots.forEach(function(dot,i){dot.classList.toggle('active',i===whyIndex);});}
