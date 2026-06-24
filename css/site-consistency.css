@@ -1,4 +1,15 @@
-/* 后续页面字体体系：与产品系统页面保持一致。 */
+/* 全站文字层级与垂直节奏。 */
+:root{
+  --type-label-size:11px;
+  --type-section-title:clamp(28px,4vw,42px);
+  --type-section-copy:18px;
+  --type-card-title:18px;
+  --type-card-copy:14px;
+  --space-heading-step:16px;
+  --space-heading-content:48px;
+  --space-card-step:12px;
+}
+
 #page-cases,#page-about,#page-partner,#page-contact,#page-login,#page-editor,#page-dashboard,#page-dealer{
   font-family:var(--font-body,'Source Han Sans CN','DM Sans','Noto Sans SC',sans-serif);
   color:#1a1a1a;
@@ -7,9 +18,9 @@
 #page-cases .section-label,#page-about .section-label,#page-partner .section-label,#page-contact .section-label,
 #page-login .section-label,#page-dashboard .section-label,#page-dealer .section-label{
   display:block;
-  margin-bottom:16px;
+  margin-bottom:var(--space-heading-step);
   font-family:var(--font-display,'Source Han Sans CN','DM Sans',sans-serif);
-  font-size:11px;
+  font-size:var(--type-label-size);
   font-weight:400;
   line-height:1.45;
   letter-spacing:3px;
@@ -19,9 +30,9 @@
 
 #page-cases .section-title,#page-about .section-title,#page-partner .section-title,#page-contact .section-title,
 #page-login .section-title,#page-dashboard .section-title,#page-dealer .section-title{
-  margin-bottom:16px;
+  margin-bottom:var(--space-heading-step);
   font-family:var(--font-display,'Source Han Sans CN','DM Sans',sans-serif);
-  font-size:clamp(28px,4vw,42px)!important;
+  font-size:var(--type-section-title)!important;
   font-weight:500;
   line-height:1.2;
   letter-spacing:0;
@@ -31,7 +42,7 @@
 #page-cases .section-subtitle,#page-about .section-subtitle,#page-partner .section-subtitle,#page-contact .section-subtitle,
 #page-login .section-subtitle,#page-dashboard .section-subtitle,#page-dealer .section-subtitle{
   max-width:680px;
-  font-size:18px;
+  font-size:var(--type-section-copy);
   font-weight:300;
   line-height:1.8;
   color:#6b6b66;
@@ -54,12 +65,45 @@
   line-height:1.35;
 }
 
-#page-partner .partner-hero-content h1{
-  font-size:clamp(36px,5vw,58px);
-  font-weight:500;
-  line-height:1.15;
-  letter-spacing:0;
+/* 同类卡片使用同一级标题、正文和标题到正文的间距。 */
+#page-partner .opp-card h3,#page-partner .adv-card h4,#page-partner .support-card h4,
+#page-system .ps-accessory h3{
+  margin-bottom:var(--space-card-step);
+  font-size:var(--type-card-title);
+  line-height:1.35;
 }
+#page-partner .opp-card p,#page-partner .adv-card p,#page-partner .support-card p,
+#page-system .ps-accessory p{
+  margin-top:0;
+  font-size:var(--type-card-copy);
+  line-height:1.7;
+}
+
+/* 紧凑的时间线属于次一级内容，但同层级仍共用统一节奏。 */
+#page-about .timeline-item h4{
+  margin-bottom:8px;
+  font-size:16px;
+  line-height:1.4;
+}
+#page-about .timeline-item p{
+  font-size:14px;
+  line-height:1.7;
+}
+
+/* 产品系统首屏与应用案例页共用同一标题组节奏。 */
+#page-system .ps-hero-content{gap:0}
+#page-system .ps-hero .ps-kicker{margin:0 0 var(--space-heading-step)}
+#page-system .ps-hero .ps-title{
+  margin:0 0 var(--space-heading-step);
+  font-size:var(--type-section-title);
+  line-height:1.2;
+}
+#page-system .ps-hero .ps-copy{
+  margin:0;
+  font-size:var(--type-section-copy);
+  line-height:1.8;
+}
+#page-system .ps-hero .ps-tags{margin:32px 0 12px}
 
 #page-partner .section-heading{
   width:100%;
@@ -69,11 +113,16 @@
 }
 #page-partner .section-heading+.opportunity-grid,
 #page-partner .section-heading+.adv-grid{
-  margin-top:64px;
+  margin-top:var(--space-heading-content);
 }
 #page-partner .section-heading .section-subtitle{
   margin:0 auto;
   text-align:center;
+}
+
+#page-about .timeline,#page-about .sustain-metrics,
+#page-partner .support-grid,#page-partner .contact-split{
+  margin-top:var(--space-heading-content);
 }
 
 #page-editor .editor-toolbar-title,#page-editor .stat-section h3,#page-editor .editor-sidebar h3{
@@ -88,7 +137,15 @@
 .footer h4{font-family:var(--font-display);font-weight:400}
 
 @media(max-width:600px){
-  #page-cases .section-subtitle,#page-about .section-subtitle,#page-partner .section-subtitle,#page-contact .section-subtitle{font-size:15px}
+  #page-home .home-subtitle,#page-system .ps-section:not(.ps-hero) .ps-copy,
+  #page-cases .section-subtitle,#page-about .section-subtitle,#page-partner .section-subtitle,#page-contact .section-subtitle{
+    font-size:15px;
+    line-height:1.8;
+  }
+  #page-partner .opp-card h3,#page-partner .adv-card h4,#page-partner .support-card h4,
+  #page-system .ps-accessory h3{font-size:17px}
+  #page-partner .opp-card p,#page-partner .adv-card p,#page-partner .support-card p,
+  #page-system .ps-accessory p{font-size:14px;line-height:1.7}
   .footer{padding:64px 0 32px}
   .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
 }
