@@ -29134,6 +29134,7 @@ void main() {
   var elementDragging = false;
   var pendingSceneElements = [];
   var sceneElementsLoadedCount = 0;
+  var sceneElementModelCache = {};
   var SCENE_ELEMENTS = {
     umbrella: { id: "umbrella", name: "\u9633\u4F1E", path: "models/\u9633\u4F1E2.glb", scale: 2 },
     four_table_chair: { id: "four_table_chair", name: "\u56DB\u4EBA\u684C\u6905\u7EC4\u5408", path: "models/\u56DB\u4EBA\u684C\u6905\u7EC4\u5408.glb", scale: 2 },
@@ -29175,19 +29176,15 @@ void main() {
         loadNext();
         return;
       }
-      currentElementConfig = config;
-      window.loadSceneElementModel(data.elementType);
-      const checkLoaded = setInterval(() => {
-        if (currentSceneElementModel && currentSceneElementModel.userData.elementType === data.elementType) {
-          clearInterval(checkLoaded);
-          const instance = currentSceneElementModel.clone();
+      prepareSceneElementModel(data.elementType, { silent: true }).then(({ model, baseOffset }) => {
+          const instance = model.clone(true);
           instance.position.set(data.x, data.y, data.z);
           instance.rotation.y = data.rotationY;
           instance.visible = true;
           instance.userData.isSceneElement = true;
           instance.userData.elementType = data.elementType;
           instance.userData.selected = false;
-          instance.userData.baseY = data.y - (data.surfaceHeight || 0);
+          instance.userData.baseY = data.y - (data.surfaceHeight || 0) || baseOffset;
           instance.userData.surfaceHeight = data.surfaceHeight || 0;
           instance.userData.originalMaterials = [];
           instance.traverse((child) => {
@@ -29197,16 +29194,62 @@ void main() {
           });
           scene.add(instance);
           sceneElements.push(instance);
+          updateStats();
           sceneElementsLoadedCount++;
           loadNext();
-        }
-      }, 100);
+        }).catch((err) => {
+          console.warn("\u573A\u666F\u5143\u7D20\u6A21\u578B\u52A0\u8F7D\u5931\u8D25:", config.name, err);
+          sceneElementsLoadedCount++;
+          loadNext();
+        });
     }
     loadNext();
   };
   var umbrellaBaseOffset = 0;
   var currentSceneElementModel = null;
   var currentElementConfig = null;
+  function prepareSceneElementModel(elementId, options = {}) {
+    const config = SCENE_ELEMENTS[elementId];
+    if (!config || !config.path) {
+      return Promise.reject(new Error("missing scene element config"));
+    }
+    if (sceneElementModelCache[elementId]) {
+      const cached = sceneElementModelCache[elementId];
+      currentElementConfig = config;
+      currentSceneElementModel = cached.model;
+      umbrellaBaseOffset = cached.baseOffset;
+      if (!options.silent && window.showToast) window.showToast("info", config.name + "\u5DF2\u52A0\u8F7D\uFF0C\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
+      return Promise.resolve(cached);
+    }
+    return new Promise((resolve, reject) => {
+      const loader = new GLTFLoader();
+      loader.load(
+        config.path,
+        (gltf) => {
+          const model = gltf.scene;
+          model.scale.setScalar(config.scale);
+          const box = new Box3().setFromObject(model);
+          const baseOffset = -box.min.y * config.scale;
+          model.visible = false;
+          model.userData.isSceneElement = true;
+          model.userData.elementType = elementId;
+          model.userData.baseY = baseOffset;
+          const cached = { model, baseOffset, config };
+          sceneElementModelCache[elementId] = cached;
+          currentElementConfig = config;
+          currentSceneElementModel = model;
+          umbrellaBaseOffset = baseOffset;
+          if (!options.silent && window.showToast) window.showToast("info", config.name + "\u5DF2\u52A0\u8F7D\uFF0C\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
+          resolve(cached);
+        },
+        void 0,
+        (err) => {
+          if (currentElementConfig?.id === elementId) currentSceneElementModel = null;
+          reject(err);
+        }
+      );
+    });
+  }
   function getHeightAtPosition(x, z) {
     const hexR = HEX_R;
     const sqrt3 = Math.sqrt(3);
@@ -29242,31 +29285,12 @@ void main() {
       if (window.showToast) window.showToast("info", config.name + "\u6A21\u578B\u5F85\u6DFB\u52A0");
       return;
     }
-    const loader = new GLTFLoader();
-    loader.load(
-      config.path,
-      (gltf) => {
-        currentSceneElementModel = gltf.scene;
-        currentSceneElementModel.scale.setScalar(config.scale);
-        const box = new Box3().setFromObject(currentSceneElementModel);
-        const minY = box.min.y;
-        const maxY = box.max.y;
-        umbrellaBaseOffset = -minY * config.scale;
-        currentSceneElementModel.visible = false;
-        currentSceneElementModel.userData.isSceneElement = true;
-        currentSceneElementModel.userData.elementType = elementId;
-        currentSceneElementModel.userData.baseY = umbrellaBaseOffset;
-        if (window.showToast) window.showToast("info", config.name + "\u5DF2\u52A0\u8F7D\uFF0C\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
-      },
-      (progress) => {
-        if (progress.total > 0) {
-        }
-      },
-      (err) => {
+    currentElementConfig = config;
+    prepareSceneElementModel(elementId).catch((err) => {
         console.error("\u52A0\u8F7D\u5931\u8D25:", err);
-        if (window.showToast) window.showToast("error", "\u6A21\u578B\u52A0\u8F7D\u5931\u8D25");
-      }
-    );
+        currentSceneElementModel = null;
+        if (window.showToast) window.showToast("error", "\u6A21\u578B\u52A0\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7528 http://127.0.0.1 \u6216\u7EBF\u4E0A\u5730\u5740\u6253\u5F00\u9875\u9762");
+      });
   };
   window.toggleSceneElementMode = function(elementId) {
     const config = SCENE_ELEMENTS[elementId];
@@ -29324,8 +29348,8 @@ void main() {
     });
     scene.add(instance);
     sceneElements.push(instance);
+    updateStats();
   };
-  window.placeSceneElementAt = placeSceneElementAt;
   function selectSceneElement(element) {
     if (selectedElement) {
       selectedElement.userData.selected = false;
@@ -29375,11 +29399,13 @@ void main() {
     if (selectedElement === element) {
       selectedElement = null;
     }
+    updateStats();
   }
   window.clearAllSceneElements = function() {
     sceneElements.forEach((el) => scene.remove(el));
     sceneElements = [];
     selectedElement = null;
+    updateStats();
   };
   window.rotateSelectedSceneElement = function() {
     if (selectedElement) {
