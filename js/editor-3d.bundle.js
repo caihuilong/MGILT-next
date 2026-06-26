@@ -28144,7 +28144,7 @@ void main() {
         sceneElementGhost = null;
       }
     }
-    if (sceneElements.length > 0 && !sceneElementMode) {
+    if (sceneElements.length > 0 && !sceneElementMode && elementSelectMode) {
       if (selectedElement) {
         if (hoverKey && gridCells[hoverKey]) {
           gridCells[hoverKey].mesh.material.color.set(13946040);
@@ -28225,7 +28225,7 @@ void main() {
             return;
           }
         }
-        return;
+        
       }
       if (e.button === 0) {
         if (hits.length > 0) {
@@ -28238,8 +28238,10 @@ void main() {
             return;
           }
         }
-        selectSceneElement(null);
-        return;
+        if (elementSelectMode || selectedElement) {
+          selectSceneElement(null);
+          if (elementSelectMode) return;
+        }
       }
     }
     if (sceneElementMode && currentSceneElementModel) {
@@ -29135,6 +29137,9 @@ void main() {
   var pendingSceneElements = [];
   var sceneElementsLoadedCount = 0;
   var sceneElementModelCache = {};
+  var sceneElementModelPromises = {};
+  var sceneElementLoadToken = 0;
+  var sceneElementPrewarmStarted = false;
   var SCENE_ELEMENTS = {
     umbrella: { id: "umbrella", name: "\u9633\u4F1E", path: "models/\u9633\u4F1E2.glb", scale: 2 },
     four_table_chair: { id: "four_table_chair", name: "\u56DB\u4EBA\u684C\u6905\u7EC4\u5408", path: "models/\u56DB\u4EBA\u684C\u6905\u7EC4\u5408.glb", scale: 2 },
@@ -29161,31 +29166,29 @@ void main() {
   window.exportSceneElementsData = exportSceneElementsData;
   window.loadSceneElementsData = function(elementsData) {
     if (!elementsData || !Array.isArray(elementsData) || elementsData.length === 0) return;
-    pendingSceneElements = elementsData;
+    const loadToken = ++sceneElementLoadToken;
+    pendingSceneElements = elementsData.slice();
     sceneElementsLoadedCount = 0;
-    function loadNext() {
-      if (sceneElementsLoadedCount >= pendingSceneElements.length) {
-        pendingSceneElements = [];
-        if (window.showToast) window.showToast("info", "\u573A\u666F\u5143\u7D20\u5DF2\u52A0\u8F7D");
-        return;
-      }
-      const data = pendingSceneElements[sceneElementsLoadedCount];
+    let loadedCount = 0;
+    if (window.showToast) window.showToast("info", "\u6B63\u5728\u52A0\u8F7D\u63A8\u8350\u7EC4\u5408\u573A\u666F\u5143\u7D20\u2026");
+    const loadTasks = pendingSceneElements.map((data) => {
       const config = SCENE_ELEMENTS[data.elementType];
       if (!config) {
         sceneElementsLoadedCount++;
-        loadNext();
-        return;
+        return Promise.resolve(null);
       }
-      prepareSceneElementModel(data.elementType, { silent: true }).then(({ model, baseOffset }) => {
-          const instance = model.clone(true);
+      return prepareSceneElementModel(data.elementType, { silent: true }).then(({ model, baseOffset }) => {
+          if (loadToken !== sceneElementLoadToken) return null;
+          const instance = cloneSceneElementModel(model);
+          const surfaceHeight = data.surfaceHeight || 0;
           instance.position.set(data.x, data.y, data.z);
           instance.rotation.y = data.rotationY;
-          instance.visible = true;
           instance.userData.isSceneElement = true;
           instance.userData.elementType = data.elementType;
           instance.userData.selected = false;
-          instance.userData.baseY = data.y - (data.surfaceHeight || 0) || baseOffset;
-          instance.userData.surfaceHeight = data.surfaceHeight || 0;
+          instance.userData.baseY = data.y - surfaceHeight;
+          instance.userData.surfaceHeight = surfaceHeight;
+          if (!Number.isFinite(instance.userData.baseY)) instance.userData.baseY = baseOffset;
           instance.userData.originalMaterials = [];
           instance.traverse((child) => {
             if (child.isMesh && child.material) {
@@ -29194,16 +29197,24 @@ void main() {
           });
           scene.add(instance);
           sceneElements.push(instance);
+          loadedCount++;
           updateStats();
           sceneElementsLoadedCount++;
-          loadNext();
+          return instance;
         }).catch((err) => {
           console.warn("\u573A\u666F\u5143\u7D20\u6A21\u578B\u52A0\u8F7D\u5931\u8D25:", config.name, err);
           sceneElementsLoadedCount++;
-          loadNext();
+          return null;
         });
-    }
-    loadNext();
+    });
+    Promise.allSettled(loadTasks).then(() => {
+      if (loadToken !== sceneElementLoadToken) return;
+      pendingSceneElements = [];
+      updateStats();
+      if (window.showToast) {
+        window.showToast(loadedCount === elementsData.length ? "info" : "warning", `\u573A\u666F\u5143\u7D20\u5DF2\u52A0\u8F7D ${loadedCount}/${elementsData.length}`);
+      }
+    });
   };
   var umbrellaBaseOffset = 0;
   var currentSceneElementModel = null;
@@ -29215,13 +29226,26 @@ void main() {
     }
     if (sceneElementModelCache[elementId]) {
       const cached = sceneElementModelCache[elementId];
-      currentElementConfig = config;
-      currentSceneElementModel = cached.model;
-      umbrellaBaseOffset = cached.baseOffset;
-      if (!options.silent && window.showToast) window.showToast("info", config.name + "\u5DF2\u52A0\u8F7D\uFF0C\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
+      if (!options.silent) {
+        currentElementConfig = config;
+        currentSceneElementModel = cached.model;
+        umbrellaBaseOffset = cached.baseOffset;
+        if (window.showToast) window.showToast("info", config.name + "\u5DF2\u52A0\u8F7D\uFF0C\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
+      }
       return Promise.resolve(cached);
     }
-    return new Promise((resolve, reject) => {
+    if (sceneElementModelPromises[elementId]) {
+      return sceneElementModelPromises[elementId].then((cached) => {
+        if (!options.silent) {
+          currentElementConfig = config;
+          currentSceneElementModel = cached.model;
+          umbrellaBaseOffset = cached.baseOffset;
+          if (window.showToast) window.showToast("info", config.name + "\u5DF2\u52A0\u8F7D\uFF0C\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
+        }
+        return cached;
+      });
+    }
+    const loadPromise = new Promise((resolve, reject) => {
       if (!options.silent && window.showToast) window.showToast("info", config.name + "\u6A21\u578B\u52A0\u8F7D\u4E2D\uFF0C\u8BF7\u7A0D\u7B49");
       const loader = new GLTFLoader();
       loader.load(
@@ -29237,9 +29261,11 @@ void main() {
           model.userData.baseY = baseOffset;
           const cached = { model, baseOffset, config };
           sceneElementModelCache[elementId] = cached;
-          currentElementConfig = config;
-          currentSceneElementModel = model;
-          umbrellaBaseOffset = baseOffset;
+          if (!options.silent || currentElementConfig?.id === elementId) {
+            currentElementConfig = config;
+            currentSceneElementModel = model;
+            umbrellaBaseOffset = baseOffset;
+          }
           if (!options.silent && window.showToast) window.showToast("info", config.name + "\u5DF2\u52A0\u8F7D\uFF0C\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
           resolve(cached);
         },
@@ -29249,7 +29275,37 @@ void main() {
           reject(err);
         }
       );
+    }).finally(() => {
+      delete sceneElementModelPromises[elementId];
     });
+    sceneElementModelPromises[elementId] = loadPromise;
+    return loadPromise;
+  }
+  function cloneSceneElementModel(model) {
+    const instance = model.clone(true);
+    instance.visible = true;
+    instance.traverse((child) => {
+      child.visible = true;
+    });
+    return instance;
+  }
+  function prewarmSceneElementModels() {
+    if (sceneElementPrewarmStarted) return;
+    sceneElementPrewarmStarted = true;
+    const queue = SCENE_ELEMENT_TYPES.map((item) => item.id).filter((id) => SCENE_ELEMENTS[id]?.path);
+    let active = 0;
+    const maxActive = 2;
+    function next() {
+      while (active < maxActive && queue.length > 0) {
+        const elementId = queue.shift();
+        active++;
+        prepareSceneElementModel(elementId, { silent: true }).catch((err) => console.warn("\u573A\u666F\u5143\u7D20\u9884\u70ED\u5931\u8D25:", elementId, err)).finally(() => {
+          active--;
+          next();
+        });
+      }
+    }
+    next();
   }
   function getHeightAtPosition(x, z) {
     const hexR = HEX_R;
@@ -29332,7 +29388,7 @@ void main() {
       if (window.showToast) window.showToast("info", "\u6A21\u578B\u8FD8\u5728\u52A0\u8F7D\uFF0C\u8BF7\u7A0D\u540E\u518D\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
       return;
     }
-    const instance = currentSceneElementModel.clone();
+    const instance = cloneSceneElementModel(currentSceneElementModel);
     const finalY = (baseHeight || 0) + umbrellaBaseOffset;
     instance.position.set(x, finalY, z);
     instance.rotation.y = rotationY || 0;

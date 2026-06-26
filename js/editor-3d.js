@@ -907,8 +907,8 @@ function onPointerMove(e) {
     }
   }
 
-  // 选择模式下（有场景元素存在时）的 hover 效果
-  if (sceneElements.length > 0 && !sceneElementMode) {
+  // 场景元素选择模式下的 hover 效果；普通模块编辑时不要拦截模块 hover
+  if (sceneElements.length > 0 && !sceneElementMode && elementSelectMode) {
     // 选择模式下鼠标悬停在场景元素上时高亮该元素
     if (selectedElement) {
       // 有选中元素，只显示选中元素的高亮，清除 hover 状态
@@ -991,7 +991,8 @@ function onPointerUp(e) {
 
   if (wasDrag) return;
 
-  // 场景元素交互（有场景元素时，且不在放置模式下）
+  // 场景元素交互：只有点中场景元素，或主动开启元素选择模式时才拦截；
+  // 否则继续执行后面的模块放置/删除逻辑。
   if (sceneElements.length > 0 && !sceneElementMode) {
     raycaster.setFromCamera(mouse, camera);
     const elementTargets = sceneElements.flatMap(el => el.children.length > 0 ? el.children : [el]);
@@ -1009,7 +1010,7 @@ function onPointerUp(e) {
           return;
         }
       }
-      return;
+      // 没点中场景元素时，继续走模块右键删除
     }
 
     // 左键点击场景元素 → 选中
@@ -1024,9 +1025,12 @@ function onPointerUp(e) {
           return;
         }
       }
-      // 点击空白处取消选中
-      selectSceneElement(null);
-      return;
+      // 点击空白处只在元素选择模式/已有选中元素时取消场景元素选中；
+      // 普通模块编辑不要拦截，继续走模块放置/替换。
+      if (elementSelectMode || selectedElement) {
+        selectSceneElement(null);
+        if (elementSelectMode) return;
+      }
     }
   }
 
@@ -2048,6 +2052,9 @@ let elementDragging = false; // 是否在拖拽场景元素
 let pendingSceneElements = []; // 待加载的场景元素队列（用于加载设计时）
 let sceneElementsLoadedCount = 0; // 已加载的场景元素数量
 let sceneElementModelCache = {}; // 已加载的场景元素模型缓存
+let sceneElementModelPromises = {}; // 正在加载中的模型，避免重复下载
+let sceneElementLoadToken = 0; // 防止旧的异步加载回写到新场景
+let sceneElementPrewarmStarted = false; // 避免重复预热模型
 
 const SCENE_ELEMENTS = {
   umbrella: { id: 'umbrella', name: '阳伞', path: 'models/阳伞2.glb', scale: 2 },
@@ -2080,36 +2087,34 @@ window.exportSceneElementsData = exportSceneElementsData;
 window.loadSceneElementsData = function(elementsData) {
   if (!elementsData || !Array.isArray(elementsData) || elementsData.length === 0) return;
 
-  pendingSceneElements = elementsData;
+  const loadToken = ++sceneElementLoadToken;
+  pendingSceneElements = elementsData.slice();
   sceneElementsLoadedCount = 0;
+  let loadedCount = 0;
 
-  // 逐个加载场景元素
-  function loadNext() {
-    if (sceneElementsLoadedCount >= pendingSceneElements.length) {
-      pendingSceneElements = [];
-      if (window.showToast) window.showToast('info', '场景元素已加载');
-      return;
-    }
+  if (window.showToast) window.showToast('info', '正在加载推荐组合场景元素…');
 
-    const data = pendingSceneElements[sceneElementsLoadedCount];
+  const loadTasks = pendingSceneElements.map(data => {
     const config = SCENE_ELEMENTS[data.elementType];
     if (!config) {
       sceneElementsLoadedCount++;
-      loadNext();
-      return;
+      return Promise.resolve(null);
     }
 
-    prepareSceneElementModel(data.elementType, { silent: true })
+    return prepareSceneElementModel(data.elementType, { silent: true })
       .then(({ model, baseOffset }) => {
-        const instance = model.clone(true);
+        if (loadToken !== sceneElementLoadToken) return null;
+
+        const instance = cloneSceneElementModel(model);
+        const surfaceHeight = data.surfaceHeight || 0;
         instance.position.set(data.x, data.y, data.z);
         instance.rotation.y = data.rotationY;
-        instance.visible = true;
         instance.userData.isSceneElement = true;
         instance.userData.elementType = data.elementType;
         instance.userData.selected = false;
-        instance.userData.baseY = data.y - (data.surfaceHeight || 0) || baseOffset;
-        instance.userData.surfaceHeight = data.surfaceHeight || 0;
+        instance.userData.baseY = data.y - surfaceHeight;
+        instance.userData.surfaceHeight = surfaceHeight;
+        if (!Number.isFinite(instance.userData.baseY)) instance.userData.baseY = baseOffset;
         instance.userData.originalMaterials = [];
         instance.traverse(child => {
           if (child.isMesh && child.material) {
@@ -2118,19 +2123,27 @@ window.loadSceneElementsData = function(elementsData) {
         });
         scene.add(instance);
         sceneElements.push(instance);
+        loadedCount++;
         updateStats();
 
         sceneElementsLoadedCount++;
-        loadNext();
+        return instance;
       })
       .catch(err => {
         console.warn('场景元素模型加载失败:', config.name, err);
         sceneElementsLoadedCount++;
-        loadNext();
+        return null;
       });
-  }
+  });
 
-  loadNext();
+  Promise.allSettled(loadTasks).then(() => {
+    if (loadToken !== sceneElementLoadToken) return;
+    pendingSceneElements = [];
+    updateStats();
+    if (window.showToast) {
+      window.showToast(loadedCount === elementsData.length ? 'info' : 'warning', `场景元素已加载 ${loadedCount}/${elementsData.length}`);
+    }
+  });
 };
 
 let umbrellaOriginalMaterials = []; // 保存原始材质用于恢复选中状态
@@ -2146,14 +2159,28 @@ function prepareSceneElementModel(elementId, options = {}) {
 
   if (sceneElementModelCache[elementId]) {
     const cached = sceneElementModelCache[elementId];
-    currentElementConfig = config;
-    currentSceneElementModel = cached.model;
-    umbrellaBaseOffset = cached.baseOffset;
-    if (!options.silent && window.showToast) window.showToast('info', config.name + '已加载，点击场景放置');
+    if (!options.silent) {
+      currentElementConfig = config;
+      currentSceneElementModel = cached.model;
+      umbrellaBaseOffset = cached.baseOffset;
+      if (window.showToast) window.showToast('info', config.name + '已加载，点击场景放置');
+    }
     return Promise.resolve(cached);
   }
 
-  return new Promise((resolve, reject) => {
+  if (sceneElementModelPromises[elementId]) {
+    return sceneElementModelPromises[elementId].then(cached => {
+      if (!options.silent) {
+        currentElementConfig = config;
+        currentSceneElementModel = cached.model;
+        umbrellaBaseOffset = cached.baseOffset;
+        if (window.showToast) window.showToast('info', config.name + '已加载，点击场景放置');
+      }
+      return cached;
+    });
+  }
+
+  const loadPromise = new Promise((resolve, reject) => {
     if (!options.silent && window.showToast) window.showToast('info', config.name + '模型加载中，请稍等');
     const loader = new GLTFLoader();
     loader.load(
@@ -2172,9 +2199,11 @@ function prepareSceneElementModel(elementId, options = {}) {
 
         const cached = { model, baseOffset, config };
         sceneElementModelCache[elementId] = cached;
-        currentElementConfig = config;
-        currentSceneElementModel = model;
-        umbrellaBaseOffset = baseOffset;
+        if (!options.silent || currentElementConfig?.id === elementId) {
+          currentElementConfig = config;
+          currentSceneElementModel = model;
+          umbrellaBaseOffset = baseOffset;
+        }
 
         if (!options.silent && window.showToast) window.showToast('info', config.name + '已加载，点击场景放置');
         resolve(cached);
@@ -2185,7 +2214,45 @@ function prepareSceneElementModel(elementId, options = {}) {
         reject(err);
       }
     );
+  }).finally(() => {
+    delete sceneElementModelPromises[elementId];
   });
+
+  sceneElementModelPromises[elementId] = loadPromise;
+  return loadPromise;
+}
+
+function cloneSceneElementModel(model) {
+  const instance = model.clone(true);
+  instance.visible = true;
+  instance.traverse(child => {
+    child.visible = true;
+  });
+  return instance;
+}
+
+function prewarmSceneElementModels() {
+  if (sceneElementPrewarmStarted) return;
+  sceneElementPrewarmStarted = true;
+
+  const queue = SCENE_ELEMENT_TYPES.map(item => item.id).filter(id => SCENE_ELEMENTS[id]?.path);
+  let active = 0;
+  const maxActive = 2;
+
+  function next() {
+    while (active < maxActive && queue.length > 0) {
+      const elementId = queue.shift();
+      active++;
+      prepareSceneElementModel(elementId, { silent: true })
+        .catch(err => console.warn('场景元素预热失败:', elementId, err))
+        .finally(() => {
+          active--;
+          next();
+        });
+    }
+  }
+
+  next();
 }
 
 // 根据世界坐标获取"落地高度"（地面或模块顶面）
@@ -2302,7 +2369,7 @@ window.placeSceneElementAt = function(x, z, rotationY, baseHeight) {
     if (window.showToast) window.showToast('info', '模型还在加载，请稍后再点击场景放置');
     return;
   }
-  const instance = currentSceneElementModel.clone();
+  const instance = cloneSceneElementModel(currentSceneElementModel);
   // 元素底部 = 模块表面高度 + 模型底座偏移
   const finalY = (baseHeight || 0) + umbrellaBaseOffset;
   instance.position.set(x, finalY, z);
