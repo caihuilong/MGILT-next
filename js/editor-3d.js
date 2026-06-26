@@ -2154,6 +2154,7 @@ function prepareSceneElementModel(elementId, options = {}) {
   }
 
   return new Promise((resolve, reject) => {
+    if (!options.silent && window.showToast) window.showToast('info', config.name + '模型加载中，请稍等');
     const loader = new GLTFLoader();
     loader.load(
       config.path,
@@ -2298,6 +2299,7 @@ window.placeSceneElementAt = function(x, z, rotationY, baseHeight) {
 
   if (!currentSceneElementModel) {
     console.warn('场景元素模型未加载');
+    if (window.showToast) window.showToast('info', '模型还在加载，请稍后再点击场景放置');
     return;
   }
   const instance = currentSceneElementModel.clone();

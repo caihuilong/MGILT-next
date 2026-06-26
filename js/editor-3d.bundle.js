@@ -29222,6 +29222,7 @@ void main() {
       return Promise.resolve(cached);
     }
     return new Promise((resolve, reject) => {
+      if (!options.silent && window.showToast) window.showToast("info", config.name + "\u6A21\u578B\u52A0\u8F7D\u4E2D\uFF0C\u8BF7\u7A0D\u7B49");
       const loader = new GLTFLoader();
       loader.load(
         config.path,
@@ -29328,6 +29329,7 @@ void main() {
     }
     if (!currentSceneElementModel) {
       console.warn("\u573A\u666F\u5143\u7D20\u6A21\u578B\u672A\u52A0\u8F7D");
+      if (window.showToast) window.showToast("info", "\u6A21\u578B\u8FD8\u5728\u52A0\u8F7D\uFF0C\u8BF7\u7A0D\u540E\u518D\u70B9\u51FB\u573A\u666F\u653E\u7F6E");
       return;
     }
     const instance = currentSceneElementModel.clone();
