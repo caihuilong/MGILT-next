@@ -28378,6 +28378,35 @@ void main() {
       }).join("");
     }
   }
+  function getDesignReportStats() {
+    const counts = new Array(6).fill(0);
+    let total = 0;
+    let totalPrice = 0;
+    Object.values(placed).forEach((id) => {
+      if (id >= 0 && id < MODULES.length) {
+        counts[id]++;
+        total++;
+        totalPrice += MODULES[id].price || 0;
+      }
+    });
+    const HEX_AREA = 3 * Math.sqrt(3) / 2 * 0.49 * 0.49;
+    const totalArea = Number((total * HEX_AREA).toFixed(2));
+    const sceneElementCounts = {};
+    sceneElements.forEach((el) => {
+      const type = el.userData?.elementType;
+      const name = SCENE_ELEMENTS[type]?.name || type || "\u672A\u77E5\u5143\u7D20";
+      sceneElementCounts[name] = (sceneElementCounts[name] || 0) + 1;
+    });
+    return {
+      counts,
+      total,
+      totalArea,
+      totalPrice,
+      siteLabel: siteLength > 0 && siteWidth > 0 ? `${siteLength}m \xD7 ${siteWidth}m` : "\u672A\u8BBE\u7F6E",
+      sceneElementCounts,
+      sceneElementTotal: sceneElements.length
+    };
+  }
   window.editorAction = function(action) {
     if (action === "clear") {
       Object.keys(meshes).forEach((key) => {
@@ -28442,11 +28471,41 @@ void main() {
       alert("\u5BFC\u51FA\u5931\u8D25\uFF1A\u7F16\u8F91\u5668\u672A\u521D\u59CB\u5316");
       return;
     }
-    const counts = new Array(6).fill(0);
-    Object.values(placed).forEach((id) => {
-      if (id >= 0 && id < 6) counts[id]++;
-    });
+    const report = getDesignReportStats();
+    const counts = report.counts;
     const wb = XLSX.utils.book_new();
+    wb.Workbook = wb.Workbook || {};
+    wb.Workbook.CalcPr = { fullCalcOnLoad: true, forceFullCalc: true };
+    const exportedAt = /* @__PURE__ */ new Date();
+    const summaryData = [
+      ["MGILT \u8BBE\u8BA1\u62A5\u8868"],
+      ["\u5BFC\u51FA\u65F6\u95F4", exportedAt.toLocaleString()],
+      ["\u573A\u5730\u8303\u56F4", report.siteLabel],
+      ["\u603B\u6A21\u5757\u6570", { f: "SUM(C11:C16)", t: "n", v: report.total }],
+      ["\u603B\u9762\u79EF(m\xB2)", { f: "B4*0.6237976320958225", t: "n", v: report.totalArea }],
+      ["\u6A21\u5757\u603B\u4EF7(\u5143)", { f: "SUM(E11:E16)", t: "n", v: report.totalPrice }],
+      ["\u573A\u666F\u5143\u7D20\u6570\u91CF", report.sceneElementTotal],
+      [],
+      ["\u6A21\u5757\u5206\u7C7B\u6C47\u603B"],
+      ["\u6A21\u5757\u7F16\u53F7", "\u6A21\u5757\u540D\u79F0", "\u6570\u91CF", "\u5355\u4EF7(\u5143)", "\u5C0F\u8BA1(\u5143)"]
+    ];
+    MODULES.forEach((m, i) => {
+      const rowNum = i + 11;
+      summaryData.push([
+        m.code,
+        m.name,
+        counts[i],
+        m.price,
+        { f: "C" + rowNum + "*D" + rowNum, t: "n", v: counts[i] * m.price }
+      ]);
+    });
+    if (Object.keys(report.sceneElementCounts).length > 0) {
+      summaryData.push([], ["\u573A\u666F\u5143\u7D20\u6C47\u603B"], ["\u5143\u7D20\u540D\u79F0", "\u6570\u91CF"]);
+      Object.entries(report.sceneElementCounts).forEach(([name, count]) => summaryData.push([name, count]));
+    }
+    const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+    wsSummary["!cols"] = [{ wch: 18 }, { wch: 18 }, { wch: 10 }, { wch: 12 }, { wch: 14 }];
+    XLSX.utils.book_append_sheet(wb, wsSummary, "\u8BBE\u8BA1\u6C47\u603B");
     const wsData = [
       ["\u6A21\u5757\u7F16\u53F7", "\u6A21\u5757\u540D\u79F0", "\u6570\u91CF", "\u5355\u4EF7(\u5143)", "\u5C0F\u8BA1(\u5143)"]
       // 表头 (第1行)
@@ -28458,17 +28517,17 @@ void main() {
         m.name,
         counts[i],
         m.price,
-        { f: "C" + rowNum + "*D" + rowNum }
+        { f: "C" + rowNum + "*D" + rowNum, t: "n", v: counts[i] * m.price }
         // 公式: 数量*单价
       ]);
     });
     wsData.push([
       "",
       "\u5408\u8BA1",
-      { f: "SUM(C2:C7)" },
+      { f: "SUM(C2:C7)", t: "n", v: report.total },
       // 数量合计公式
       "",
-      { f: "SUM(E2:E7)" }
+      { f: "SUM(E2:E7)", t: "n", v: report.totalPrice }
       // 小计合计公式
     ]);
     const ws1 = XLSX.utils.aoa_to_sheet(wsData);

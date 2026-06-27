@@ -1191,6 +1191,38 @@ function updateStats() {
   }
 }
 
+function getDesignReportStats() {
+  const counts = new Array(6).fill(0);
+  let total = 0;
+  let totalPrice = 0;
+  Object.values(placed).forEach(id => {
+    if (id >= 0 && id < MODULES.length) {
+      counts[id]++;
+      total++;
+      totalPrice += MODULES[id].price || 0;
+    }
+  });
+
+  const HEX_AREA = (3 * Math.sqrt(3) / 2) * 0.49 * 0.49;
+  const totalArea = Number((total * HEX_AREA).toFixed(2));
+  const sceneElementCounts = {};
+  sceneElements.forEach(el => {
+    const type = el.userData?.elementType;
+    const name = SCENE_ELEMENTS[type]?.name || type || '未知元素';
+    sceneElementCounts[name] = (sceneElementCounts[name] || 0) + 1;
+  });
+
+  return {
+    counts,
+    total,
+    totalArea,
+    totalPrice,
+    siteLabel: siteLength > 0 && siteWidth > 0 ? `${siteLength}m × ${siteWidth}m` : '未设置',
+    sceneElementCounts,
+    sceneElementTotal: sceneElements.length
+  };
+}
+
 window.editorAction = function(action) {
   if (action === 'clear') {
     Object.keys(meshes).forEach(key => { scene.remove(meshes[key]); delete meshes[key]; });
@@ -1259,15 +1291,48 @@ window.exportDesignExcel = function() {
     return;
   }
 
-  // 1. 统计模块数量
-  const counts = new Array(6).fill(0);
-  Object.values(placed).forEach(id => { if (id >= 0 && id < 6) counts[id]++; });
+  // 1. 统计模块数量和汇总数据
+  const report = getDesignReportStats();
+  const counts = report.counts;
 
   // 2. 创建Excel工作簿
   const wb = XLSX.utils.book_new();
+  wb.Workbook = wb.Workbook || {};
+  wb.Workbook.CalcPr = { fullCalcOnLoad: true, forceFullCalc: true };
 
-  // 工作表1: 模块统计 - 使用公式计算合计
-  // SheetJS 公式格式: { f: "公式" }
+  // 工作表1: 设计汇总 - 数量/单价可编辑，汇总项使用公式自动计算
+  const exportedAt = new Date();
+  const summaryData = [
+    ['MGILT 设计报表'],
+    ['导出时间', exportedAt.toLocaleString()],
+    ['场地范围', report.siteLabel],
+    ['总模块数', { f: 'SUM(C11:C16)', t: 'n', v: report.total }],
+    ['总面积(m²)', { f: 'B4*0.6237976320958225', t: 'n', v: report.totalArea }],
+    ['模块总价(元)', { f: 'SUM(E11:E16)', t: 'n', v: report.totalPrice }],
+    ['场景元素数量', report.sceneElementTotal],
+    [],
+    ['模块分类汇总'],
+    ['模块编号', '模块名称', '数量', '单价(元)', '小计(元)']
+  ];
+  MODULES.forEach((m, i) => {
+    const rowNum = i + 11;
+    summaryData.push([
+      m.code,
+      m.name,
+      counts[i],
+      m.price,
+      { f: 'C' + rowNum + '*D' + rowNum, t: 'n', v: counts[i] * m.price }
+    ]);
+  });
+  if (Object.keys(report.sceneElementCounts).length > 0) {
+    summaryData.push([], ['场景元素汇总'], ['元素名称', '数量']);
+    Object.entries(report.sceneElementCounts).forEach(([name, count]) => summaryData.push([name, count]));
+  }
+  const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+  wsSummary['!cols'] = [{ wch: 18 }, { wch: 18 }, { wch: 10 }, { wch: 12 }, { wch: 14 }];
+  XLSX.utils.book_append_sheet(wb, wsSummary, '设计汇总');
+
+  // 工作表2: 模块统计 - 保留公式，同时写入缓存值，兼容 Excel/WPS/网页预览
   const wsData = [
     ['模块编号', '模块名称', '数量', '单价(元)', '小计(元)']  // 表头 (第1行)
   ];
@@ -1280,7 +1345,7 @@ window.exportDesignExcel = function() {
       m.name,
       counts[i],
       m.price,
-      { f: 'C' + rowNum + '*D' + rowNum }  // 公式: 数量*单价
+      { f: 'C' + rowNum + '*D' + rowNum, t: 'n', v: counts[i] * m.price }  // 公式: 数量*单价
     ]);
   });
 
@@ -1288,9 +1353,9 @@ window.exportDesignExcel = function() {
   wsData.push([
     '',
     '合计',
-    { f: 'SUM(C2:C7)' },  // 数量合计公式
+    { f: 'SUM(C2:C7)', t: 'n', v: report.total },  // 数量合计公式
     '',
-    { f: 'SUM(E2:E7)' }   // 小计合计公式
+    { f: 'SUM(E2:E7)', t: 'n', v: report.totalPrice }   // 小计合计公式
   ]);
 
   const ws1 = XLSX.utils.aoa_to_sheet(wsData);
