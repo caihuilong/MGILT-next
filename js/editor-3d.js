@@ -1570,11 +1570,11 @@ function initPalette() {
     </div>
   `}).join('');
 
-  // 模块面板默认展开，进入设计器即可看到可用模块。
+  // 模块面板默认收起，进入设计器时只显示标题。
   const header = document.getElementById('modulePaletteHeader');
   const palette = document.getElementById('modulePalette');
-  if (header) header.classList.remove('collapsed');
-  if (palette) palette.classList.remove('collapsed');
+  if (header) header.classList.add('collapsed');
+  if (palette) palette.classList.add('collapsed');
 }
 
 window.toggleModulePalette = function() {

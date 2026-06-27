@@ -28721,8 +28721,8 @@ void main() {
     }).join("");
     const header = document.getElementById("modulePaletteHeader");
     const palette = document.getElementById("modulePalette");
-    if (header) header.classList.remove("collapsed");
-    if (palette) palette.classList.remove("collapsed");
+    if (header) header.classList.add("collapsed");
+    if (palette) palette.classList.add("collapsed");
   }
   window.toggleModulePalette = function() {
     const header = document.getElementById("modulePaletteHeader");
