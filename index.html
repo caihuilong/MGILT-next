@@ -3284,12 +3284,18 @@ window.addEventListener('error', function(e) {
     </svg>
   </button>
   <script>
-    // 监听滚动，显示/隐藏回到顶部按钮
-    window.addEventListener('scroll',function(){
+    // 仅在页面接近最底部时显示回到顶部按钮
+    function updateBackToTopButton(){
       var btn=document.getElementById('backToTop');
-      if(window.scrollY>500){btn.classList.add('visible');}
+      if(!btn)return;
+      var doc=document.documentElement;
+      var distanceToBottom=doc.scrollHeight-window.innerHeight-window.scrollY;
+      if(window.scrollY>500&&distanceToBottom<160){btn.classList.add('visible');}
       else{btn.classList.remove('visible');}
-    });
+    }
+    window.addEventListener('scroll',updateBackToTopButton,{passive:true});
+    window.addEventListener('resize',updateBackToTopButton);
+    updateBackToTopButton();
   </script>
 </body>
 </html>
